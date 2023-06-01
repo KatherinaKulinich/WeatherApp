@@ -36,10 +36,23 @@ export const UserLogin: React.FC = () => {
                             onChange={handleChange} 
                             centered 
                             textColor="secondary"
+                            indicatorColor="secondary"
                             variant="fullWidth" 
                         >
-                            <Tab label="Log in"/>
-                            <Tab label="Sign up"/>
+                            <Tab  
+                                label={
+                                    <span style={{ color: '#bae6fd' }}>
+                                        Log in
+                                    </span>
+                                }
+                            />
+                            <Tab  
+                                label={
+                                    <span style={{ color: '#bae6fd' }}>
+                                        Sign up
+                                    </span>
+                                }
+                            />
                         </Tabs>
                     </Box>
                     <TabPanel value={value} index={0}>

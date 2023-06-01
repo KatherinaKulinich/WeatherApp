@@ -21,7 +21,7 @@ export const App = () => {
                     <Route path="mycity" element={<UserLocationPage/>}/>
                     <Route path="saved" element={<UserCitiesPage/>}/>
                     <Route path="saved/:city" element={<CityWeatherPage/>}/>
-                    <Route path="forecast/:date" element={<WeatherDetailsPage/>}/>
+                    <Route path="mycity/forecast/:date" element={<WeatherDetailsPage/>}/>
                     <Route path="login" element={<UserLogin/>}/>
                 </Route>
                 <Route path="*" element={<Page404/>} />

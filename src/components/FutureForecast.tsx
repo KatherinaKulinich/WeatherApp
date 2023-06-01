@@ -1,35 +1,39 @@
 import { ForecastDayCard } from "./ForecastDayCard"
-import Rain from '../assets/images/backgrounds/rain.jpg';
-import Storm from '../assets/images/backgrounds/storm.jpg';
-import Mist from '../assets/images/backgrounds/mist.jpg';
-import Sky from '../assets/images/backgrounds/sun.jpg';
-import LightClouds from '../assets/images/backgrounds/lightClouds.jpg';
-import DarkClouds from '../assets/images/backgrounds/arkClouds.jpg';
-import Snow from '../assets/images/backgrounds/snow.jpg';
-import { useNavigate } from "react-router-dom";
-
-interface FutureForecastProps {
-    weekday: string;
-    currentDate: string;
-}
+import { useAppDispatch, useAppSelector } from "../hooks/hooks";
+import { getDayForecast } from "../rdx/forecastSlice";
 
 
-export const FutureForecast: React.FC<FutureForecastProps> = ({weekday, currentDate}) => {
-    const navigate = useNavigate();
 
-    const onOpenDayForecast = (date: number) => {
-        navigate(`/forecast/${date}`)
+
+export const FutureForecast: React.FC = () => {
+    const dispatch = useAppDispatch();
+
+    const { daily } = useAppSelector(state => state.forecast.weatherForecast)
+
+
+    const transformDate = (time:number) => {
+        const date = new Date(time * 1000).toLocaleDateString('en-GB');
+        const format = date.replaceAll(/\//g, '^')
+        return format
     }
+    
+
 
     return (
         <div className="flex flex-col items-center justify-center gap-3 w-full max-w-[600px] mr-auto ml-auto">
-            <ForecastDayCard 
-                temperatureValue={0}
-                forecastImage={Snow} 
-                onOpenDayDetails={()=>onOpenDayForecast(7777777)} 
-                weekday={weekday}          
-                currentDate={currentDate}
-            />
+            {daily?.length > 0 && (
+                (daily.map((item) => (
+
+                    <ForecastDayCard 
+                        temperatureValue={Math.round(item.temp.max)}
+                        forecastImage={`${item.weather[0].id}`} 
+                        onOpenDayDetails={() => dispatch(getDayForecast(item))}           
+                        date={item.dt}
+                        key={item.dt}
+                        path={`/mycity/forecast/${transformDate(item.dt)}`}
+                    />
+                )))
+            )}
         </div>
     )
 }

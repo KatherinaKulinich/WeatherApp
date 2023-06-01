@@ -9,6 +9,8 @@ import uvIcon from '../assets/images/sunUV.svg';
 import sunriseIcon from '../assets/images/sunrise.svg';
 import sunsetIcon from '../assets/images/sunset.svg';
 
+
+
 interface WidgetsGroupProps {
     windValue: number;
     humidityValue: number;
@@ -18,8 +20,8 @@ interface WidgetsGroupProps {
     cloudsValue: number;
     rainValue: number;
     uvValue: number;
-    sunriseValue: number;
-    sunsetValue: number;
+    sunriseValue: string;
+    sunsetValue: string;
 }
 
 
@@ -29,7 +31,7 @@ export const WidgetsGroup:React.FC<WidgetsGroupProps> = (
     {windValue, humidityValue, pressureValue, tempMin, tempMax, cloudsValue, rainValue, uvValue, sunriseValue, sunsetValue}) => {
 
     return (
-        <div className="flex flex-wrap justify-center gap-5 md:gap-16 w-full ">
+        <div className="flex flex-wrap items-stretch justify-center gap-5 md:gap-16 w-full ">
             <div className="w-full max-w-[320px] sm:w-1/3 md:1/4">
                 <ItemWidget 
                     itemIcon={windIcon} 
@@ -73,9 +75,9 @@ export const WidgetsGroup:React.FC<WidgetsGroupProps> = (
             <div className="w-full max-w-[320px] sm:w-1/3 md:1/4">
                 <ItemWidget 
                     itemIcon={rainIcon} 
-                    itemName={"precipitation"} 
-                    itemValue={rainValue ? rainValue : '--'}
-                    itemUnits="mm/h"
+                    itemName={"chance to rain"} 
+                    itemValue={rainValue}
+                    itemUnits="%"
                 />
             </div>
             <div className="w-full max-w-[320px] sm:w-1/3 md:1/4">

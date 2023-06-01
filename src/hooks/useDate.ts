@@ -11,19 +11,22 @@ export const useDate = (timeValue: number, timeZone: string) => {
 
     const date = new Date(timeValue)
 
+    
+
     const dayOptions: OptionsDay = { weekday: "long" }
     const dateOptions: OptionsDate= {month: 'short'}
 
-    const weekday = new Intl.DateTimeFormat("en-US", dayOptions).format(TEST) //!!!
-    const month = new Intl.DateTimeFormat("en-US", dateOptions).format(TEST) //!!!
-    const formatDate = `${TEST.getDay()} ${month} ${TEST.getFullYear()}` //!!!
+    const weekday = new Intl.DateTimeFormat("en-US", dayOptions).format(date) //!!!
+    const month = new Intl.DateTimeFormat("en-US", dateOptions).format(date) //!!!
+    const formatDate = `${date.getDate()} ${month} ${date.getFullYear()}` //!!!
 
 
     
 
 
     const localTime = new Date().toLocaleTimeString("en-GB", {timeZone: timeZone})
-    const [time, setTime] = useState(localTime)
+  
+    const [time, setTime] = useState(new Date().toLocaleTimeString("en-GB", {timeZone: timeZone}))
 
 
     function refreshClock() {

@@ -13,10 +13,10 @@ export const HourlyData: React.FC<HourlyDataProps> = ({time, icon, temperature})
                 {time}
             </p>
             <img 
-                src={icon} 
+                src={`http://openweathermap.org/img/wn/${icon}@2x.png`} 
                 alt="icon" 
-                width={30}
-                height={30}
+                width={50}
+                height={50}
             />
             <p className="text-sky-50 text-lg font-normal whitespace-nowrap">
                 {temperature} &#8451;
