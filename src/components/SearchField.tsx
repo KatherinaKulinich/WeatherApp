@@ -20,7 +20,6 @@ export const SearchField: React.FC<SearchFieldProps> = ({onChangeInput, inputVal
             <TextField 
                 label="Search" 
                 variant="standard" 
-                multiline
                 size="small"
                 fullWidth
                 onChange={onChangeInput}

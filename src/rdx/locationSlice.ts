@@ -60,6 +60,9 @@ const locationSlice = createSlice({
         },
         getError(state, action: PayloadAction<string>) {
             state.errorMessage = action.payload
+        },
+        onClearCoords(state) {
+            state.coords = {} as Coords
         }
     }
 })
@@ -79,13 +82,13 @@ export const fetchLocationData = (reguest: string) => {
         })
         .then(data => {
 
-            console.warn(data[0].name);
+            
 
             dispatch(getCityName(data[0].name))
             dispatch(getRegionName(data[0].state))
             dispatch(getCountryCode(data[0].country))
             dispatch(getLatitudeCoords(data[0].lat))
-            dispatch(getLongitudeCoords(data[0].lone))
+            dispatch(getLongitudeCoords(data[0].lon))
             
         })
         .catch(error => {
@@ -101,5 +104,5 @@ export const fetchLocationData = (reguest: string) => {
 
 
 
-export const { getCountryCode, getCityName, getLatitudeCoords, getLongitudeCoords, getError, getRegionName } = locationSlice.actions;
+export const { getCountryCode, getCityName, getLatitudeCoords, getLongitudeCoords, getError, getRegionName, onClearCoords } = locationSlice.actions;
 export default locationSlice.reducer;

@@ -23,18 +23,19 @@ interface DailyWeatherInfoProps {
     sunrise: number;
     sunset:number;
     dt:number;
+    currentTimeZone: string;
 }
 
 
 
 export const DailyWeatherInfo:React.FC<DailyWeatherInfoProps> = (
-    { weatherIcon, children, temperatureValue, description, feelslike, windSpeed, humidity, pressure,maxTemp, minTemp, clouds, averagePop, uvi, sunrise, sunset, dt }) => {
+    { weatherIcon, children, temperatureValue, description, feelslike, windSpeed, humidity, pressure,maxTemp, minTemp, clouds, averagePop, uvi, sunrise, sunset, dt, currentTimeZone }) => {
 
 
 
     const getSimpleTime = (timeValue:number) => {
         const date = new Date(timeValue * 1000)
-        const time = date.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })
+        const time = date.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit", timeZone: currentTimeZone })
 
         return time
     }

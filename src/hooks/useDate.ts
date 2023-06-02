@@ -4,11 +4,6 @@ import { useEffect, useState } from "react"
 
 export const useDate = (timeValue: number, timeZone: string) => {
 
-
-    const TEST = new Date()
-
-
-
     const date = new Date(timeValue)
 
     
@@ -16,15 +11,15 @@ export const useDate = (timeValue: number, timeZone: string) => {
     const dayOptions: OptionsDay = { weekday: "long" }
     const dateOptions: OptionsDate= {month: 'short'}
 
-    const weekday = new Intl.DateTimeFormat("en-US", dayOptions).format(date) //!!!
-    const month = new Intl.DateTimeFormat("en-US", dateOptions).format(date) //!!!
-    const formatDate = `${date.getDate()} ${month} ${date.getFullYear()}` //!!!
+    const weekday = new Intl.DateTimeFormat("en-US", dayOptions).format(date) 
+    const month = new Intl.DateTimeFormat("en-US", dateOptions).format(date) 
+    const formatDate = `${date.getDate()} ${month} ${date.getFullYear()}` 
 
 
     
 
 
-    const localTime = new Date().toLocaleTimeString("en-GB", {timeZone: timeZone})
+    // const localTime = new Date().toLocaleTimeString("en-GB", {timeZone: timeZone})
   
     const [time, setTime] = useState(new Date().toLocaleTimeString("en-GB", {timeZone: timeZone}))
 
@@ -40,7 +35,7 @@ export const useDate = (timeValue: number, timeZone: string) => {
         return function cleanup() {
             clearInterval(timerId);
         };
-    }, []);
+    }, [time]);
 
 
 

@@ -3,12 +3,17 @@ import { useAppDispatch, useAppSelector } from "../hooks/hooks";
 import { getDayForecast } from "../rdx/forecastSlice";
 
 
-
+// interface FutureForecastProps {
+//     cityName: string;
+// }
 
 export const FutureForecast: React.FC = () => {
     const dispatch = useAppDispatch();
 
     const { daily } = useAppSelector(state => state.forecast.weatherForecast)
+    const { cityName } = useAppSelector(state => state.locationData)
+    console.log(cityName);
+    
 
 
     const transformDate = (time:number) => {
@@ -30,7 +35,7 @@ export const FutureForecast: React.FC = () => {
                         onOpenDayDetails={() => dispatch(getDayForecast(item))}           
                         date={item.dt}
                         key={item.dt}
-                        path={`/mycity/forecast/${transformDate(item.dt)}`}
+                        path={`/${cityName}/forecast/${transformDate(item.dt)}`}
                     />
                 )))
             )}

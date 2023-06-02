@@ -4,7 +4,7 @@ import { GiSherlockHolmes } from 'react-icons/Gi'
 import { WeatherDisplay } from "../components/WeatherDisplay";
 import { Loader } from "../components/Loader";
 import { useAppDispatch, useAppSelector } from "../hooks/hooks";
-import { fetchForecast } from "../rdx/forecastSlice";
+import { fetchForecast, getWeatherForecast } from "../rdx/forecastSlice";
 import { fetchLocationData } from "../rdx/locationSlice";
 import { ErrorMessage } from "../components/ErrorMessage";
 
@@ -17,7 +17,7 @@ export const UserLocationPage: React.FC = () => {
     const [loading, setLoading] = useState(true)
 
     const [latitude, setLatitude] = useState<number | null>(null)
-    const [longtitude, setLongtitude] = useState<number | null>(null)
+    const [longitude, setLongitude] = useState<number | null>(null)
     
     const dispatch = useAppDispatch();
     const forecast = useAppSelector(state => state.forecast.weatherForecast)
@@ -27,7 +27,7 @@ export const UserLocationPage: React.FC = () => {
     
     const getUserLocation = async (position: { coords: { longitude: number; latitude: number }}) => {
         setLatitude(position.coords.latitude)
-        setLongtitude(position.coords.longitude)
+        setLongitude(position.coords.longitude)
     }
     
     
@@ -35,16 +35,19 @@ export const UserLocationPage: React.FC = () => {
         setLoading(false)
     }
 
+    const getLocationData = () => {
+        navigator.geolocation.getCurrentPosition(getUserLocation, errorLocation);
+    }
+
 
     const fetchData = async () => {
-        window.addEventListener('load', () => {
-            navigator.geolocation.getCurrentPosition(getUserLocation, errorLocation);
-        })
+        
+        dispatch(getWeatherForecast({}))
+        await window.addEventListener('load', getLocationData)
 
-
-        if (latitude !== null && longtitude !== null) {
-            await dispatch(fetchLocationData(`reverse?lat=${latitude}&lon=${longtitude}`))  
-            await dispatch(fetchForecast(latitude, longtitude))
+        if (latitude !== null && longitude !== null) {
+            await dispatch(fetchLocationData(`reverse?lat=${latitude}&lon=${longitude}`))  
+            await dispatch(fetchForecast(latitude, longitude))
             await setLoading(false)
         }
     }
@@ -52,10 +55,11 @@ export const UserLocationPage: React.FC = () => {
 
 
     useEffect(() => {
-
+   
+        getLocationData()
         fetchData()
 
-    },[latitude, longtitude])
+    },[latitude, longitude])
 
 
     

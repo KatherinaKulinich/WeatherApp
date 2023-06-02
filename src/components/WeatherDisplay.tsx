@@ -40,15 +40,13 @@ export const WeatherDisplay: React.FC = () => {
     const { timezone: cityTimeZone, current } = useAppSelector(state => state.forecast.weatherForecast)
 
     const currentTime = new Date().getTime()
+
     const { time } = useDate(currentTime, cityTimeZone)
     const { hourly } = useAppSelector(state => state.forecast.weatherForecast)
 
     const { dt, clouds, feels_like, humidity, pressure, sunrise, sunset, temp, uvi, wind_speed } = useAppSelector(state => state.forecast.weatherForecast.current)
     
-    
-    
-    
-    
+
     
     
     
@@ -57,13 +55,14 @@ export const WeatherDisplay: React.FC = () => {
 
     
     const dayHourly = hourly.slice(0,24)
-    const allTemp = dayHourly.map((obj) => obj.temp)
-    const allPop = dayHourly.map((obj) => obj.pop)
+    const allTemp:number[] = dayHourly.map((obj) => obj.temp)
+    const allPop:number[] = dayHourly.map((obj) => obj.pop)
 
     
-    const averagePop = Math.round((allPop.reduce((a,b) => a + b)/allPop.length) * 100)
+    const averagePop = Math.round((allPop.reduce((a,b) => a + b)/allPop.length) * 100) 
     const maxTemp = Math.round(Math.max(...allTemp))
     const minTemp = Math.round(Math.min(...allTemp))
+    
     
     
 
@@ -82,7 +81,7 @@ export const WeatherDisplay: React.FC = () => {
                     {`${cityName}`}
                 </h1>
                 <p className="text-lg md:text-2xl text-white font-extrabold"> 
-                    {`${regionName}, ${countryCode}`}
+                    {`${regionName !== undefined ? regionName : cityName}, ${countryCode}`}
                 </p>
                 <p className="text-lg md:text-2xl text-sky-200 font-extralight tracking-widest">
                     {time}
@@ -133,7 +132,8 @@ export const WeatherDisplay: React.FC = () => {
                         uvi={uvi} 
                         sunrise={sunrise} 
                         sunset={sunset}     
-                        dt={dt}              
+                        dt={dt} 
+                        currentTimeZone={cityTimeZone}            
                     >
                         <HourlyWidget/>
                     </DailyWeatherInfo>

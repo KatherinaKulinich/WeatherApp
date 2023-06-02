@@ -15,7 +15,8 @@ interface ForecastState {
     userSavedCities: string[],
     userSavedForecasts: GeneralForecast[],
     errorMessage: string,
-    dailyForecast: DailyForecastItem
+    dailyForecast: DailyForecastItem,
+    loading: boolean
 }
 
 
@@ -27,7 +28,8 @@ const initialState: ForecastState = {
     userSavedCities: [],
     userSavedForecasts: [],
     errorMessage: '',
-    dailyForecast: {} as DailyForecastItem
+    dailyForecast: {} as DailyForecastItem,
+    loading: false,
 }
 
 
@@ -36,13 +38,22 @@ const forecastSlice = createSlice({
     initialState,
     reducers: {
         getWeatherForecast(state, action: PayloadAction<any>) {
+            state.loading = false;
             state.weatherForecast = action.payload;
+            
         },
         getError(state, action: PayloadAction<string>) {
+            state.loading = false;
             state.errorMessage = action.payload
         },
         getDayForecast(state, action:PayloadAction<any>) {
             state.dailyForecast = action.payload
+        },
+        clearForecastData(state) {
+            state.weatherForecast = {} as GeneralForecast
+        },
+        getLoading(state) {
+            state.loading = true;
         }
     }
 })
@@ -63,9 +74,8 @@ export const fetchForecast = (lat:number, lon:number) => {
             throw new Error('Something went wrong');
         })  
         .then(data => {
-
             dispatch(getWeatherForecast(data))
-            
+ 
         })
         .catch(error => {
             dispatch(getError(error.message));
@@ -76,5 +86,5 @@ export const fetchForecast = (lat:number, lon:number) => {
 
 
 
-export const { getWeatherForecast, getError, getDayForecast } = forecastSlice.actions;
+export const { getWeatherForecast, getError, getDayForecast, clearForecastData, getLoading } = forecastSlice.actions;
 export default forecastSlice.reducer;
