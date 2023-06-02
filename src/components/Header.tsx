@@ -7,14 +7,9 @@ export const Header:React.FC = () => {
 
     return (
        <div className="flex flex-col gap-9 py-6">
-            <div className="flex flex-row justify-between align-middle">
+            <div className="flex  flex-col gap-4 md:flex-row justify-between align-middle">
                 <Logo/>
-                <UserLog 
-                    isAuth={false} 
-                    userName={""} 
-                    userMail={""} 
-                    userAvatar={""}
-                />
+                <UserLog/>
             </div>
             <div className="flex justify-center">
                 <Navigation/>

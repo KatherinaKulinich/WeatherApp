@@ -7,6 +7,8 @@ import { fetchLocationData, onClearCoords } from "../rdx/locationSlice";
 import { clearForecastData, fetchForecast, getLoading, getWeatherForecast } from "../rdx/forecastSlice";
 import { Loader } from "../components/Loader";
 import { ErrorMessage } from "../components/ErrorMessage";
+import { FaRegStar } from 'react-icons/Fa'
+import { IconContext } from "react-icons";
 
 export const MainPage:React.FC = () => {
     
@@ -82,6 +84,17 @@ export const MainPage:React.FC = () => {
             />
             {loading && (
                 <Loader/>
+            )}
+            
+            {Object.keys(forecastData).length !== 0 && (
+                <div  className="flex items-center gap-4">
+                    <IconContext.Provider value={{ color: "#fde68a", size: "22px"}}>
+                        <FaRegStar/>
+                    </IconContext.Provider>
+                    <p className="uppercase text-lg md:text-2xl font-extrabold text-amber-200">
+                        Save this city
+                    </p>
+                </div>
             )}
             {Object.keys(forecastData).length !== 0 && (
                 <WeatherDisplay />

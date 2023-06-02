@@ -1,8 +1,10 @@
-import { Box, AppBar, Tabs, Tab, Typography, ThemeProvider, createTheme } from "@mui/material";
-import { useState } from "react";
+import { Box, AppBar, Tabs, Tab, Typography, ThemeProvider, createTheme, AlertTitle, Collapse } from "@mui/material";
+import {  useEffect, useState } from "react";
 import { TabPanel } from "../components/TabPanel";
 import { LogInContainer } from "../components/LogInContainer";
 import { SignUpContainer } from "../components/SignUpContainer";
+import { useFirebaseAuth } from "../hooks/useFirebaseAuth";
+import Alert from '@mui/material/Alert';
 
 const theme = createTheme({
     palette: {
@@ -16,15 +18,46 @@ const theme = createTheme({
 });
 
 
-export const UserLogin: React.FC = () => {
-    const [value, setValue] = useState(0);
 
+
+export const UserLogin: React.FC = () => {
+
+ 
+    const [value, setValue] = useState(0);
     const handleChange = (event: React.SyntheticEvent, newValue: number) => {
         setValue(newValue);
     };
 
+
+
+    const {onLoginHandler, onLoginByGoogle, onRegisterHandler, error, openAlert, setOpenAlert} = useFirebaseAuth()
+    
+
+    useEffect(() => {
+        setTimeout(() => {
+            setOpenAlert(false);
+        }, 6000);
+    }, [openAlert])
+    
+
+
+
+    
+
+
+
     return (
         <div className="py-16 flex flex-col items-center gap-9">
+            {error && (
+                <Collapse in={openAlert}>
+                    <Alert severity="error">
+                        <AlertTitle>
+                            Error
+                        </AlertTitle>
+                        {error.message}
+                    </Alert>
+                </Collapse>
+            )}
             <h1 className="uppercase text-xl sm:text-2xl font-extralight text-sky-200">
                 Log in to get more features
             </h1>
@@ -56,10 +89,17 @@ export const UserLogin: React.FC = () => {
                         </Tabs>
                     </Box>
                     <TabPanel value={value} index={0}>
-                       <LogInContainer/>
+                       <LogInContainer
+                            onSendData={onLoginHandler} 
+                            onHandleClickGoogle={onLoginByGoogle}
+                            error={error}
+                        />
                     </TabPanel>
                     <TabPanel value={value} index={1}>
-                        <SignUpContainer/>
+                        <SignUpContainer 
+                            onSendData={onRegisterHandler}
+                            error={error}
+                        />
                     </TabPanel>
                 </ThemeProvider>   
             </div>
