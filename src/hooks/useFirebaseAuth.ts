@@ -2,8 +2,9 @@
 import { GoogleAuthProvider, getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signInWithPopup } from "firebase/auth";
 import { useCallback, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { setUser } from "../rdx/userDataSlice";
+import { setUser } from "../rdx/slices/userDataSlice";
 import { useAppDispatch } from "./hooks";
+
 
 
 
@@ -12,16 +13,18 @@ import { useAppDispatch } from "./hooks";
 export const useFirebaseAuth = () => {
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
+
     const [email, setEmail] = useState<string>('');
     const [password, setPassword] = useState<string>('');
 
-    const [error, setError] = useState<any>(null)
-    const [openAlert, setOpenAlert] = useState(true);
+    const [openAlert, setOpenAlert] = useState<boolean>(true);
+    const [error, setError] = useState<ErrorType>(null)
 
-
+    
     const provider = new GoogleAuthProvider();
     const auth = getAuth();
-
+    
+  
 
 
 
@@ -44,7 +47,6 @@ export const useFirebaseAuth = () => {
         const auth = getAuth();
         createUserWithEmailAndPassword(auth, email, password)
             .then(({user}) => {
-
                 dispatch(setUser({
                     email: user.email,
                     id: user.uid,
@@ -52,13 +54,9 @@ export const useFirebaseAuth = () => {
                 }));
                 navigate('/')
             })
-
-            .catch((error) => {
-                console.warn(error);
+            .catch((error:Error) => {
                 setError(error)
                 setOpenAlert(true)
-                // message.info(error.message, 3)
-                // message.error(error.code, 3)
             })
     }
 
@@ -76,14 +74,10 @@ export const useFirebaseAuth = () => {
                 password: user.refreshToken,
             }));
             navigate(-1)
-            
         })
-        .catch((error) => {
-            console.warn(error);
+        .catch((error:Error) => {
             setError(error)
             setOpenAlert(true)
-            // message.info(error.message, 3)
-            // message.error(error.code, 3)
         });
 
     }, [])
@@ -110,13 +104,9 @@ export const useFirebaseAuth = () => {
             }));
             navigate(-1)
         })
-        .catch((error) => {
-            console.warn(error);
+        .catch((error:Error) => {
             setError(error)
             setOpenAlert(true)
-            
-            // message.info(error.message, 3)
-            // message.error(error.code, 3)
         });
     }, [])
 
@@ -134,6 +124,6 @@ export const useFirebaseAuth = () => {
         error,
         openAlert,
         setOpenAlert,
-        setError
+        setError,
     }
 }

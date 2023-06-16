@@ -1,4 +1,4 @@
-import Rain from '../assets/images/backgrounds/rain.jpg';
+import Rain from '../assets/images/backgrounds/rain2.jpg';
 import Storm from '../assets/images/backgrounds/storm.jpg';
 import Mist from '../assets/images/backgrounds/mist.jpg';
 import Sky from '../assets/images/backgrounds/sun.jpg';

@@ -1,77 +1,97 @@
-
-import { useEffect, useState } from "react"
+import { useCallback, useEffect, useState } from "react"
 import { SearchField } from "../components/SearchField"
 import { WeatherDisplay } from "../components/WeatherDisplay"
 import { useAppDispatch, useAppSelector } from "../hooks/hooks";
-import { fetchLocationData, onClearCoords } from "../rdx/locationSlice";
-import { clearForecastData, fetchForecast, getLoading, getWeatherForecast } from "../rdx/forecastSlice";
+import { fetchLocationData } from "../rdx/slices/locationSlice";
+import { clearForecastData, fetchForecast, getLoading, getWeatherForecast } from "../rdx/slices/forecastSlice";
 import { Loader } from "../components/Loader";
 import { ErrorMessage } from "../components/ErrorMessage";
-import { FaRegStar } from 'react-icons/Fa'
+import { FaRegStar, FaStar } from 'react-icons/Fa'
 import { IconContext } from "react-icons";
+import { useSaveCity } from "../hooks/useSaveCity";
+import { Alert, AlertTitle } from "@mui/material";
+import { useCityImage } from "../hooks/useCityImage";
+import { useCheckCity } from "../hooks/useCheckCity";
+import { fetchSavedCitiesData } from "../rdx/slices/savedSlice";
+import { useAuth } from "../hooks/useUserAuthData";
+
+
+
+
 
 export const MainPage:React.FC = () => {
-    
     const dispatch = useAppDispatch();
-
-
+    const { id : userId } = useAuth();
     const latitude = useAppSelector(state => state.locationData.coords.latitude)
     const longitude = useAppSelector(state => state.locationData.coords.longitude)
-
     const forecastData = useAppSelector(state => state.forecast.weatherForecast)
-
+    const { loading } = useAppSelector(state => state.forecast)
+    const { errorMessage } = useAppSelector(state => state.forecast)
+    const { errorMessage: errorLocation } = useAppSelector(state => state.locationData)
+    const { cityName, regionName, countryCode } = useAppSelector(state => state.locationData)
+    const { timezone } = useAppSelector(state => state.forecast.weatherForecast)
+    const { onSaveCityData } = useSaveCity()
+    const { checkCity, onCheckSaving, setCheckCity } = useCheckCity()
+    const { getCityBgImage } = useCityImage()
     const [textValue, setTextValue] = useState('')
-    // const [data, setData] = useState(false)
+    
 
-    const onChangeInputValue = (e: React.ChangeEvent<HTMLInputElement>) => {
+
+
+    const onChangeInputValue = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {      
         setTextValue(e.target.value)
-    }
-
-    const onGetForecast = (e:  React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault()
-
-        fetchData()
-
-        dispatch(getWeatherForecast({}))
-        setTextValue('')
-    }
+    },[])
 
 
 
-    const fetchData = async() => {
-
-
-        
-        if (textValue !== '') {
-
+    const fetchData = useCallback(async() => {
+        if (textValue.trim() !== '') {
+            const validValue = textValue.replaceAll(/[^a-zа-яіё ]/gi, '');
             await dispatch(clearForecastData())
             await dispatch(getLoading())
-            // await dispatch(getWeatherForecast({}))
-            // await dispatch(onClearCoords())
-            await dispatch(fetchLocationData(`direct?q=${textValue}`)) 
+            await dispatch(fetchLocationData(`direct?q=${validValue}`)) 
         }
-    }
 
+    },[textValue])
+
+
+
+    const onGetForecast = useCallback((event:  React.FormEvent<HTMLFormElement>) => {
+        event.preventDefault()
+        fetchData()
+        dispatch(getWeatherForecast({} as GeneralForecast))
+        setTextValue('')
+
+    },[textValue])
 
 
     useEffect(() => {
-        // dispatch(getWeatherForecast({}))
-        // dispatch(onClearCoords())
-      
-
         if (latitude !== null && longitude !== null) {
-            dispatch(fetchForecast(latitude, longitude))
-        } 
-    
+
+            (async () => {
+                await dispatch(fetchForecast(latitude, longitude))
+                await onCheckSaving()
+            })();
+        }  
+    }, [latitude, longitude, userId])
+
+
+
+    const onSave = useCallback(
+        async (cityName:string, regionName:string, countryName:string, latitude:number | null, longitude:number | null, timeZone:string) => {
+            
+        if (checkCity) return;
+       
+        await onSaveCityData(cityName, regionName, countryName, latitude, longitude, timeZone)
+        await getCityBgImage()
+        await setCheckCity(true)
         
-    }, [textValue, latitude, longitude])
-    
-    console.warn(forecastData);
+        if (userId) {
+            await dispatch(fetchSavedCitiesData(userId))
+        }
+    },[])
 
 
-    const { loading } = useAppSelector(state => state.forecast)
-    const { errorMessage } = useAppSelector(state => state.forecast)
-    
 
 
 
@@ -82,21 +102,45 @@ export const MainPage:React.FC = () => {
                 inputValue={textValue}
                 onSubmitData={onGetForecast}
             />
+    
             {loading && (
                 <Loader/>
             )}
-            
-            {Object.keys(forecastData).length !== 0 && (
-                <div  className="flex items-center gap-4">
-                    <IconContext.Provider value={{ color: "#fde68a", size: "22px"}}>
-                        <FaRegStar/>
-                    </IconContext.Provider>
-                    <p className="uppercase text-lg md:text-2xl font-extrabold text-amber-200">
-                        Save this city
+
+            {errorLocation !== '' && (
+                <Alert 
+                    severity="error" 
+                    sx={{ width: '100%', maxWidth: '300px' }} 
+                    variant="outlined" 
+                    className="flex justify-center  items-center gap-4 uppercase"
+                >
+                    <AlertTitle className="text-red-600">
+                        Error
+                    </AlertTitle>
+                    {errorLocation}
+                </Alert>
+            )}
+
+            {Object.keys(forecastData).length !== 0  && errorLocation === '' && (
+                <div  
+                    className="flex items-center gap-4 cursor-pointer active:text-amber-400"
+                    onClick={() => onSave(cityName, regionName, countryCode, latitude, longitude, timezone) }
+                >
+                    {checkCity ? (
+                        <IconContext.Provider value={{ color: "#fde68a", size: "22px"}} >
+                            <FaStar/>
+                        </IconContext.Provider>
+                    ) : (
+                        <IconContext.Provider value={{ color: "#fde68a", size: "22px"}} >
+                            <FaRegStar/>
+                        </IconContext.Provider>
+                    )}
+                    <p className="uppercase text-lg md:text-2xl font-extrabold text-amber-200 active:text-amber-400">
+                        {checkCity ? 'Saved!' : 'Save this city' } 
                     </p>
                 </div>
             )}
-            {Object.keys(forecastData).length !== 0 && (
+            {Object.keys(forecastData).length !== 0 && errorLocation === '' && (
                 <WeatherDisplay />
             )}
             {errorMessage && (

@@ -12,26 +12,28 @@ import { useEffect } from "react";
 export const WeatherDetailsPage: React.FC = () => {
 
     const navigate = useNavigate();
+
     const forecast = useAppSelector(state => state.forecast.weatherForecast)
-    console.log(forecast);
-    
+    const { cityName, regionName, countryCode } = useAppSelector(state => state.locationData)
+    const { timezone: cityTimeZone } = useAppSelector(state => state.forecast.weatherForecast)
+    const {uvi, sunrise, sunset, temp, feels_like, pressure, humidity, wind_speed, weather, clouds, pop, dt} = useAppSelector(state => state.forecast.dailyForecast)
+
 
     useEffect(() => {
         if (Object.keys(forecast).length === 0) {
             navigate('/')
         }
-    }, [forecast])
+    }, [])
 
 
-    const { cityName, regionName, countryCode } = useAppSelector(state => state.locationData)
-    const {timezone: cityTimeZone} = useAppSelector(state => state.forecast.weatherForecast)
     
     const currentTime = new Date().getTime()
-    const {time} = useDate(currentTime, cityTimeZone)
+    const { time } = useDate(currentTime, cityTimeZone)
 
-    const {uvi, sunrise, sunset, temp, feels_like, pressure, humidity, wind_speed, weather, clouds, pop, dt} = useAppSelector(state => state.forecast.dailyForecast)
     const description = weather ? weather[0]?.description : ''
     const icon = weather ? weather[0]?.icon : ''
+
+    const regularTextStyles = 'text-sky-200 font-extralight tracking-widest'
    
 
 
@@ -49,10 +51,10 @@ export const WeatherDetailsPage: React.FC = () => {
                         <p className="text-lg md:text-2xl text-white font-extrabold"> 
                             {`${regionName}, ${countryCode}`}
                         </p>
-                        <p className="text-lg md:text-2xl text-sky-200 font-extralight tracking-widest">
+                        <p className={`text-lg md:text-2xl ${regularTextStyles}`}>
                             {time}
                         </p>
-                        <p className="text-xs md:text-lg text-sky-200 font-extralight tracking-widest">
+                        <p className={`text-xs md:text-lg ${regularTextStyles}`}>
                             {cityTimeZone}
                         </p>
                     </div>
@@ -77,7 +79,7 @@ export const WeatherDetailsPage: React.FC = () => {
                 </div>
             ) : (
                 <div className="py-16 flex flex-col gap-12">
-                    <p className="text-lg md:text-2xl text-sky-200 font-extralight tracking-widest">
+                    <p className={`text-lg md:text-2xl ${regularTextStyles}`}>
                         City hadn't been selected
                     </p>
                 </div>

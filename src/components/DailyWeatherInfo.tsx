@@ -1,3 +1,4 @@
+import { useCallback } from "react";
 import { TitleWeatherData } from "./TitleWeatherData";
 import { WidgetsGroup } from "./WidgetsGroup";
 
@@ -33,12 +34,12 @@ export const DailyWeatherInfo:React.FC<DailyWeatherInfoProps> = (
 
 
 
-    const getSimpleTime = (timeValue:number) => {
+    const getSimpleTime = useCallback((timeValue:number) => {
         const date = new Date(timeValue * 1000)
         const time = date.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit", timeZone: currentTimeZone })
 
         return time
-    }
+    },[])
 
 
 

@@ -1,22 +1,16 @@
 import { AnyAction, PayloadAction, ThunkDispatch, createSlice } from "@reduxjs/toolkit";
-import { RootState } from "./store";
-
-
-
-
+import { RootState } from "../store";
 
 const API_KEY = import.meta.env.VITE_WEATHER_API_KEY;
-const API_URL = import.meta.env.VITE_WEATHER_API_URL
-
+const API_URL = import.meta.env.VITE_WEATHER_API_URL;
 
 
 interface ForecastState {
     weatherForecast: GeneralForecast,
-    userSavedCities: string[],
     userSavedForecasts: GeneralForecast[],
     errorMessage: string,
     dailyForecast: DailyForecastItem,
-    loading: boolean
+    loading: boolean,
 }
 
 
@@ -25,7 +19,6 @@ interface ForecastState {
 
 const initialState: ForecastState = {
     weatherForecast: {} as GeneralForecast,
-    userSavedCities: [],
     userSavedForecasts: [],
     errorMessage: '',
     dailyForecast: {} as DailyForecastItem,
@@ -37,16 +30,15 @@ const forecastSlice = createSlice({
     name: 'forecast',
     initialState,
     reducers: {
-        getWeatherForecast(state, action: PayloadAction<any>) {
+        getWeatherForecast(state, action: PayloadAction<GeneralForecast>) {
             state.loading = false;
-            state.weatherForecast = action.payload;
-            
+            state.weatherForecast = action.payload;   
         },
         getError(state, action: PayloadAction<string>) {
             state.loading = false;
             state.errorMessage = action.payload
         },
-        getDayForecast(state, action:PayloadAction<any>) {
+        getDayForecast(state, action:PayloadAction<DailyForecastItem >) {
             state.dailyForecast = action.payload
         },
         clearForecastData(state) {
@@ -54,7 +46,7 @@ const forecastSlice = createSlice({
         },
         getLoading(state) {
             state.loading = true;
-        }
+        },
     }
 })
 
@@ -70,19 +62,16 @@ export const fetchForecast = (lat:number, lon:number) => {
             if (response.ok) {
                 return response.json()
             } 
-
             throw new Error('Something went wrong');
         })  
         .then(data => {
             dispatch(getWeatherForecast(data))
- 
         })
         .catch(error => {
             dispatch(getError(error.message));
         })
     }
 }
-
 
 
 

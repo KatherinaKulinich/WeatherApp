@@ -1,11 +1,11 @@
-import { useEffect, useState } from "react"
+import { useCallback, useEffect, useState } from "react"
 import { IconContext } from "react-icons";
 import { GiSherlockHolmes } from 'react-icons/Gi'
 import { WeatherDisplay } from "../components/WeatherDisplay";
 import { Loader } from "../components/Loader";
 import { useAppDispatch, useAppSelector } from "../hooks/hooks";
-import { fetchForecast, getWeatherForecast } from "../rdx/forecastSlice";
-import { fetchLocationData } from "../rdx/locationSlice";
+import { fetchForecast, getWeatherForecast } from "../rdx/slices/forecastSlice";
+import { fetchLocationData } from "../rdx/slices/locationSlice";
 import { ErrorMessage } from "../components/ErrorMessage";
 
 
@@ -14,58 +14,55 @@ import { ErrorMessage } from "../components/ErrorMessage";
 
 export const UserLocationPage: React.FC = () => {
     
+    const dispatch = useAppDispatch();
     const [loading, setLoading] = useState(true)
-
     const [latitude, setLatitude] = useState<number | null>(null)
     const [longitude, setLongitude] = useState<number | null>(null)
     
-    const dispatch = useAppDispatch();
     const forecast = useAppSelector(state => state.forecast.weatherForecast)
     const error = useAppSelector(state => state.forecast.errorMessage)
     
     
-    
-    const getUserLocation = async (position: { coords: { longitude: number; latitude: number }}) => {
+
+
+
+    const getUserLocation = useCallback(async (position: { coords: { longitude: number; latitude: number }}) => {
         setLatitude(position.coords.latitude)
         setLongitude(position.coords.longitude)
-    }
+    },[])
     
     
     const errorLocation = () => {
         setLoading(false)
     }
 
-    const getLocationData = () => {
+    const getLocationData = useCallback(() => {
         navigator.geolocation.getCurrentPosition(getUserLocation, errorLocation);
-    }
+    },[])
 
 
-    const fetchData = async () => {
-        
-        dispatch(getWeatherForecast({}))
+    const fetchData = useCallback(async () => { 
+        dispatch(getWeatherForecast({} as GeneralForecast))
         await window.addEventListener('load', getLocationData)
+        
 
         if (latitude !== null && longitude !== null) {
             await dispatch(fetchLocationData(`reverse?lat=${latitude}&lon=${longitude}`))  
             await dispatch(fetchForecast(latitude, longitude))
             await setLoading(false)
         }
-    }
+    },[latitude, longitude])
     
 
 
     useEffect(() => {
-   
         getLocationData()
         fetchData()
-
     },[latitude, longitude])
 
 
     
   
-    
-
     
 
 

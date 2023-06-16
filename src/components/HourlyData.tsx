@@ -1,3 +1,6 @@
+const IMG_URL = import.meta.env.VITE_WEATHER_ICON_URL
+
+
 interface HourlyDataProps {
     time: string;
     icon: string;
@@ -13,7 +16,7 @@ export const HourlyData: React.FC<HourlyDataProps> = ({time, icon, temperature})
                 {time}
             </p>
             <img 
-                src={`http://openweathermap.org/img/wn/${icon}@2x.png`} 
+                src={`${IMG_URL}${icon}@2x.png`} 
                 alt="icon" 
                 width={50}
                 height={50}

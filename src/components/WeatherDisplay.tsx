@@ -1,12 +1,11 @@
 
 import { Box, Tabs, Tab, ThemeProvider, createTheme } from "@mui/material";
-import { useEffect, useState } from "react";
-import {DailyWeatherInfo} from './DailyWeatherInfo';
-import {FutureForecast} from './FutureForecast';
+import { useState } from "react";
+import { DailyWeatherInfo} from './DailyWeatherInfo';
+import { FutureForecast} from './FutureForecast';
 import { TabPanel } from "./TabPanel";
-import { AttachEmail } from "@mui/icons-material";
+import { useAppSelector } from "../hooks/hooks";
 import { useDate } from "../hooks/useDate";
-import { useAppDispatch, useAppSelector } from "../hooks/hooks";
 import { HourlyWidget } from "./HourlyWidget";
 
 
@@ -28,35 +27,27 @@ const theme = createTheme({
 
 export const WeatherDisplay: React.FC = () => {
 
-    
+    const currentTime = new Date().getTime()
     const [value, setValue] = useState(0);
+    const { cityName, regionName, countryCode } = useAppSelector(state => state.locationData)
+    const { timezone: cityTimeZone, current } = useAppSelector(state => state.forecast.weatherForecast)
+    const { hourly } = useAppSelector(state => state.forecast.weatherForecast)
+    const { dt, clouds, feels_like, humidity, pressure, sunrise, sunset, temp, uvi, wind_speed } = useAppSelector(state => state.forecast.weatherForecast.current)
+    
+    const { time } = useDate(currentTime, cityTimeZone)
+
     const handleChange = (event: React.SyntheticEvent, newValue: number) => {
         setValue(newValue);
     };
 
-
-
-    const { cityName, regionName, countryCode } = useAppSelector(state => state.locationData)
-    const { timezone: cityTimeZone, current } = useAppSelector(state => state.forecast.weatherForecast)
-
-    const currentTime = new Date().getTime()
-
-    const { time } = useDate(currentTime, cityTimeZone)
-    const { hourly } = useAppSelector(state => state.forecast.weatherForecast)
-
-    const { dt, clouds, feels_like, humidity, pressure, sunrise, sunset, temp, uvi, wind_speed } = useAppSelector(state => state.forecast.weatherForecast.current)
-    
-
-    
-    
     
     const icon = current?.weather[0]?.icon
     const description = current.weather[0].description
 
     
     const dayHourly = hourly.slice(0,24)
-    const allTemp:number[] = dayHourly.map((obj) => obj.temp)
-    const allPop:number[] = dayHourly.map((obj) => obj.pop)
+    const allTemp:number[] = dayHourly.map((obj:any) => obj.temp)
+    const allPop:number[] = dayHourly.map((obj:any) => obj.pop)
 
     
     const averagePop = Math.round((allPop.reduce((a,b) => a + b)/allPop.length) * 100) 
@@ -67,13 +58,6 @@ export const WeatherDisplay: React.FC = () => {
     
 
 
-
-    
-    
-
-
-
-
     return (
         <div className="w-full flex flex-col items-stretch gap-6">
             <div className="text-center uppercase">
@@ -81,7 +65,7 @@ export const WeatherDisplay: React.FC = () => {
                     {`${cityName}`}
                 </h1>
                 <p className="text-lg md:text-2xl text-white font-extrabold"> 
-                    {`${regionName !== undefined ? regionName : cityName}, ${countryCode}`}
+                    {`${regionName !== '' ? regionName : cityName}, ${countryCode}`}
                 </p>
                 <p className="text-lg md:text-2xl text-sky-200 font-extralight tracking-widest">
                     {time}

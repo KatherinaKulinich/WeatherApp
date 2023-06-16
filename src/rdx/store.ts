@@ -1,7 +1,8 @@
 import { configureStore } from "@reduxjs/toolkit";
-import forecastSlice from "./forecastSlice";
-import locationSlice from "./locationSlice";
-import userDataSlice from "./userDataSlice";
+import forecastSlice from "./slices/forecastSlice";
+import locationSlice from "./slices/locationSlice";
+import userDataSlice from "./slices/userDataSlice";
+import savedSlice from "./slices/savedSlice";
 
 
 
@@ -10,6 +11,7 @@ const store = configureStore({
         forecast: forecastSlice,
         locationData: locationSlice,
         user: userDataSlice,
+        saved: savedSlice,
     },
     middleware: (getDefaultMiddleware) =>
         getDefaultMiddleware({

@@ -9,6 +9,8 @@ interface SearchFieldProps {
     onSubmitData: (event: React.FormEvent<HTMLFormElement>) => void;
 }
 
+
+
 export const SearchField: React.FC<SearchFieldProps> = ({onChangeInput, inputValue, onSubmitData}) => {
    
     

@@ -1,5 +1,5 @@
-import { AnyAction, PayloadAction, ThunkDispatch, createSlice } from "@reduxjs/toolkit";
-import { RootState } from "./store";
+import { AnyAction, PayloadAction, ThunkDispatch, TypedStartListening, createSlice } from "@reduxjs/toolkit";
+import { RootState } from "../store";
 
 
 const API_KEY = import.meta.env.VITE_WEATHER_API_KEY;
@@ -14,7 +14,7 @@ interface Coords  {
 
 interface LocationState {
     coords: Coords,
-    cityName: string | any,
+    cityName: string,
     regionName: string,
     countryCode: string,
     errorMessage: string
@@ -44,7 +44,7 @@ const locationSlice = createSlice({
     initialState,
     reducers: {
         getLatitudeCoords(state, action: PayloadAction<number>) {
-            state.coords.latitude = action.payload
+            state.coords.latitude = action.payload 
         },
         getLongitudeCoords(state, action: PayloadAction<number>) {
             state.coords.longitude = action.payload
@@ -81,26 +81,23 @@ export const fetchLocationData = (reguest: string) => {
             throw new Error('Something went wrong');
         })
         .then(data => {
-
-            
-
-            dispatch(getCityName(data[0].name))
-            dispatch(getRegionName(data[0].state))
-            dispatch(getCountryCode(data[0].country))
-            dispatch(getLatitudeCoords(data[0].lat))
-            dispatch(getLongitudeCoords(data[0].lon))
-            
+ 
+            if (data.length > 0) {
+                dispatch(getCityName(data[0].name))
+                dispatch(getRegionName(data[0].state ? data[0].state : ''))
+                dispatch(getCountryCode(data[0].country))
+                dispatch(getLatitudeCoords(data[0].lat))
+                dispatch(getLongitudeCoords(data[0].lon))
+                dispatch(getError(''));
+                return
+            }
+            dispatch(getError('Wrong request'));   
         })
         .catch(error => {
             dispatch(getError(error.message));
         })
     }
 }
-
-// http://api.openweathermap.org/geo/1.0/   reverse?lat={lat}&lon={lon}    &limit={limit}&appid={API key}
-// http://api.openweathermap.org/geo/1.0/      direct?q=London       &limit=5&appid={API key}
-
-
 
 
 

@@ -1,5 +1,5 @@
-import { Box, AppBar, Tabs, Tab, Typography, ThemeProvider, createTheme, AlertTitle, Collapse } from "@mui/material";
-import {  useEffect, useState } from "react";
+import { Box, Tabs, Tab, ThemeProvider, createTheme, AlertTitle, Collapse } from "@mui/material";
+import {  useCallback, useEffect, useState } from "react";
 import { TabPanel } from "../components/TabPanel";
 import { LogInContainer } from "../components/LogInContainer";
 import { SignUpContainer } from "../components/SignUpContainer";
@@ -24,14 +24,13 @@ export const UserLogin: React.FC = () => {
 
  
     const [value, setValue] = useState(0);
-    const handleChange = (event: React.SyntheticEvent, newValue: number) => {
-        setValue(newValue);
-    };
-
-
-
     const {onLoginHandler, onLoginByGoogle, onRegisterHandler, error, openAlert, setOpenAlert} = useFirebaseAuth()
-    
+
+    const handleChange = useCallback((event: React.SyntheticEvent, newValue: number) => {
+        setValue(newValue);
+    },[])
+
+
 
     useEffect(() => {
         setTimeout(() => {
@@ -40,9 +39,6 @@ export const UserLogin: React.FC = () => {
     }, [openAlert])
     
 
-
-
-    
 
 
 

@@ -1,3 +1,4 @@
+import { useCallback } from "react";
 import { IconContext } from "react-icons";
 import { MdArrowBackIosNew } from 'react-icons/Md'
 import { useNavigate } from "react-router-dom";
@@ -12,9 +13,9 @@ interface BackButtonProps {
 export const BackButton:React.FC<BackButtonProps> = ({buttonText}) => {
 
     const navigate = useNavigate();
-    const onBackToPage = () => {
+    const onBackToPage = useCallback(() => {
         navigate(-1)
-    }
+    },[])
 
     
     return (

@@ -1,7 +1,6 @@
 import { HourlyData } from "./HourlyData"
 import { useAppSelector } from "../hooks/hooks";
-
-
+import { useCallback } from "react";
 
 
 
@@ -9,19 +8,22 @@ import { useAppSelector } from "../hooks/hooks";
 
 export const HourlyWidget: React.FC = () => {
 
-    const getSimpleTime = (timeValue:number) => {
-        const date = new Date(timeValue * 1000)
-        return date.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })
-    }
-
-
     const { hourly } = useAppSelector(state => state.forecast.weatherForecast)
 
-    function selectFewerProps(show:HourlyForecastItem){
+    const getSimpleTime = useCallback((timeValue:number) => {
+        const date = new Date(timeValue * 1000)
+        const format = date.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })
+        return format
+    },[])
+
+    const selectFewerProps = useCallback((show:HourlyForecastItem) => {
         const {dt, weather, temp} = show;
         return {dt, weather, temp};
-    }
+    },[])
+    
     const hourlyWidgetsData = hourly.map(selectFewerProps);
+
+    
 
 
     return (

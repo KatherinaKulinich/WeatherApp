@@ -1,7 +1,5 @@
-import { Box, TextField } from "@mui/material"
+
 import { LogForm } from "./LogForm"
-import { AccountCircle } from "@mui/icons-material"
-import LockIcon from '@mui/icons-material/Lock';
 import { IconContext } from "react-icons";
 import { GrGoogle } from 'react-icons/Gr';
 
@@ -11,16 +9,12 @@ import { GrGoogle } from 'react-icons/Gr';
 interface LogInContainerProps {
     onSendData:  (event: React.MouseEvent<HTMLButtonElement, MouseEvent>, email: string, password: string) => void;
     onHandleClickGoogle:  React.MouseEventHandler<HTMLButtonElement>,
-    error?: Error;
-    // emailValue: string;
-    // passwordValue: string;
-    // onChangeEmail: React.ChangeEventHandler<HTMLInputElement>
-    // onChangePassword: React.ChangeEventHandler<HTMLInputElement>;
-    // onHandleClickGoogle: React.MouseEventHandler<HTMLButtonElement>
+    error: ErrorType
 }
 
 
-export const LogInContainer:React.FC<LogInContainerProps> = ({onSendData, onHandleClickGoogle, error}) => {
+export const LogInContainer:React.FC<LogInContainerProps> = ({onSendData, onHandleClickGoogle,  error}) => {
+
 
     return (
         <div className="border rounded-md p-8 md:p-16 w-full max-w-[600px] mr-auto ml-auto bg-sky-200/10 flex flex-col items-center gap-6">

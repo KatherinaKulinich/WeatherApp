@@ -89,3 +89,12 @@
 .card__button:hover  svg {
     right: -2.3rem
 }
+
+.card__unsave {
+    opacity: 0;
+}
+
+.card:hover .card__unsave {
+    opacity: 1;
+    transition: opacity 2s ease;
+}

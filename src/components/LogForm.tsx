@@ -4,13 +4,14 @@ import { IconContext } from 'react-icons';
 import { MdSend} from 'react-icons/Md';
 import { useFirebaseAuth } from '../hooks/useFirebaseAuth';
 import LockIcon from '@mui/icons-material/Lock';
-import { useEffect, useState } from 'react';
-import { AuthErrorCodes } from 'firebase/auth';
+import { useCallback, useEffect, useState } from 'react';
+
+
 
 interface LogFormProps {
     formTitle: string;
     onSendData:  (event: React.MouseEvent<HTMLButtonElement, MouseEvent>, email: string, password: string) => void;
-    error?: Error;
+    error: ErrorType
 }
 
 
@@ -19,62 +20,50 @@ interface LogFormProps {
 
 export const LogForm: React.FC<LogFormProps> = ({ formTitle, onSendData, error}) => {
 
-    const [isEmailInvalid, setIsEmailInvalid] = useState(false);
-    const [isPasswordInvalid, setIsPasswordInvalid] = useState(false);
-
-
     const { email, password, onSaveEmail, onSavePassword, setError} = useFirebaseAuth()
 
-    
-    const onValidateEmail = () => {
+    const [isEmailError, setIsEmailError] = useState(false)
+    const [isPasswordError, setIsPasswordError] = useState(false)
 
-        if (error) {
-            console.log(error.message);
-            if (error.message.includes('auth/invalid-email')) {
-                
-                setIsEmailInvalid(true)
-                return
-            }
-            setIsEmailInvalid(false)
-        }
-    }
 
-    const onHandleChangeEmail = (e:React.ChangeEvent<HTMLInputElement>) => {
+    const onHandleChangeEmail = useCallback((e:React.ChangeEvent<HTMLInputElement>) => {
         onSaveEmail(e)
+        setIsEmailError(false)
         setError(null)
-        setIsEmailInvalid(false)
-    }
+    },[])
 
-
-
-    const onValidatePassword = () => {
-
-        if (error) {
-            console.log(error.message);
-            if (error.message.includes('auth/weak-password') || error.message.includes('auth/wrong-password')) {
-                
-                setIsPasswordInvalid(true)
-                return
-            }
-            setIsPasswordInvalid(false)
-        }
-    }
-
-    const onHandleChangePassword = (e:React.ChangeEvent<HTMLInputElement>) => {
+    const onHandleChangePassword = useCallback((e:React.ChangeEvent<HTMLInputElement>) => {
         onSavePassword(e)
+        setIsPasswordError(false)
         setError(null)
-        setIsPasswordInvalid(false)
-    }
+    },[])
 
 
+    const onFilterError = useCallback((err:ErrorType) => {;  
+        if (err) {
+            if (err.message.includes('auth/invalid-email')) {   
+                setIsEmailError(true)
+            }
+
+            if (err.message.includes('auth/weak-password') || err.message.includes('auth/wrong-password')) {    
+                setIsPasswordError(true)  
+            }
+        }
+    }, [isEmailError, isPasswordError])
 
 
+    
+    
+    const onSendUserData = useCallback((event:any, email:string, password:string) => {
+        onFilterError(error)
+        onSendData(event, email, password)
+    },[error, isEmailError, isPasswordError])
+    
+    
+    
     useEffect(() => {
-        onValidateEmail()
-        onValidatePassword()
+        onFilterError(error)
     }, [error])
-    
-    
 
 
     return (
@@ -98,7 +87,7 @@ export const LogForm: React.FC<LogFormProps> = ({ formTitle, onSendData, error})
                         value={email}
                         onChange={onHandleChangeEmail}
                         autoComplete='off'
-                        error={isEmailInvalid}
+                        error={isEmailError}
                     />
                 </Box>
                 <Box sx={{ display: 'flex', alignItems: 'flex-end' }}>
@@ -111,14 +100,14 @@ export const LogForm: React.FC<LogFormProps> = ({ formTitle, onSendData, error})
                         value={password}
                         onChange={onHandleChangePassword}
                         autoComplete='off'
-                        error={isPasswordInvalid}
+                        error={isPasswordError}
                     />
                 </Box>
             </div>
             <button 
                 type='submit'
                 className='border rounded-md px-4 py-2 bg-sky-200/25 p-2 hover:bg-sky-500/25 active:bg-sky-500/50 flex items-center gap-4  text-sky-50 uppercase text-xs md:text-base'
-                onClick={(event) => onSendData(event, email, password)}
+                onClick={(event) => onSendUserData(event, email, password)}
             >
                 Send
                 <IconContext.Provider value={{ color: "#e0f2fe", size: "24px" }}>

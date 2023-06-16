@@ -1,22 +1,10 @@
-type OptionsDay = {
-    weekday: "long" | "short" | "narrow" | undefined;
-}
-type OptionsDate = {
-    month: "long" | "short" |undefined
-}
-
-
-
-
-
 interface MainForecast {
     dt: number,
     pressure: number,
     humidity: number,
     dew_point: number,
     uvi: number,
-    clouds: number,
-    
+    clouds: number, 
     wind_speed: number,
     wind_deg: number,
     wind_gust: number,
@@ -86,14 +74,6 @@ interface MainInfo {
 }
 
 
-// interface TodayForecast {
-//     lat: number,
-//     lon: number,
-//     timezone: string,
-//     timezone_offset:number,
-//     current: CurrentForecast
-// }
-
 type HourlyForecast = HourlyForecastItem[]
 
 type DailyForecast = DailyForecastItem[]
@@ -112,7 +92,32 @@ interface LocationData {
     city: string,
     country: string
 }
+
+interface SavedCityData {
+    cityName: string,
+    regionName: string, 
+    countryName: string,
+    latitude: number,
+    longitude: number,
+    timeZone: string,
+    id: string,
+    image: string
+}
   
+
+
+
+type OptionsDay = {
+    weekday: "long" | "short" | "narrow" | undefined;
+}
+type OptionsDate = {
+    month: "long" | "short" |undefined
+}
+
+type ErrorType = Error | null
+
+
+
   
               
 

@@ -3,6 +3,8 @@ import { useNavigate } from "react-router-dom";
 import { MdArrowBackIosNew } from 'react-icons/Md'
 import { GiSherlockHolmes } from 'react-icons/Gi'
 
+
+
 export const Page404:React.FC = () => {
 
     const navigate = useNavigate();

@@ -12,7 +12,7 @@ interface ForecastDayCardProps {
     date: number;
     temperatureValue: number;
     forecastImage: string;
-    onOpenDayDetails: any;
+    onOpenDayDetails: React.MouseEventHandler<HTMLDivElement>;
     path: string
 }
 
@@ -26,8 +26,6 @@ export const ForecastDayCard: React.FC<ForecastDayCardProps> = ({date, temperatu
 
     const {timezone: cityTimeZone } = useAppSelector(state => state.forecast.weatherForecast)
     const {weekday, formatDate} = useDate(date*1000, cityTimeZone)
-
-    
 
 
     return (

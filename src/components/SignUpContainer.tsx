@@ -1,16 +1,10 @@
-import { AccountCircle } from "@mui/icons-material"
-import { Box, TextField } from "@mui/material"
 import { LogForm } from "./LogForm"
-import LockIcon from '@mui/icons-material/Lock';
+
 
 
 interface SignUpContainerProps {
     onSendData: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>, email: string, password: string) => void;
-    error?: Error
-    // emailValue: string;
-    // passwordValue: string;
-    // onChangeEmail: React.ChangeEventHandler<HTMLInputElement>
-    // onChangePassword: React.ChangeEventHandler<HTMLInputElement>;
+    error: ErrorType
 }
 
 

@@ -1,8 +1,10 @@
 import './CityCard.css';
 import { IconContext } from 'react-icons';
 import { MdDoubleArrow } from 'react-icons/Md';
-import test from '../../assets/images/backgrounds/test.jpg'
 import { CityCardWidget } from '../CityCardWidget';
+import { FaStar } from 'react-icons/Fa'
+
+
 
 interface CityCardProps {
     cityName: string;
@@ -12,17 +14,24 @@ interface CityCardProps {
     pressureValue: number;
     rainValue: number;
     humidityValue: number;
-    onOpenCity: any;
+    onOpenCity: React.MouseEventHandler<HTMLButtonElement> ;
+    onUnsaveCity: (city:any) => void;
+    cityImgSrc: string;
 }
 
 
+
+
+
+
 export const CityCard:React.FC<CityCardProps> = ({
-    cityName, temperatureValue, descriptionValue, windValue, pressureValue, rainValue, humidityValue, onOpenCity}) => {
+    cityName, temperatureValue, descriptionValue, windValue, pressureValue, rainValue, humidityValue, onOpenCity, onUnsaveCity, cityImgSrc}) => {
+
         
     return (
         <div className="card">
             <img 
-                src={test} 
+                src={cityImgSrc} 
                 alt="cityImage"
                 className='card__image'
             />
@@ -30,7 +39,7 @@ export const CityCard:React.FC<CityCardProps> = ({
                 <div className='flex items-center justify-between'>
                     <div className='flex flex-col gap-3 text-white uppercase'>
                         <div className=''>
-                            <h1 className=' text-4xl  font-bold'>
+                            <h1 className=' text-2xl  font-bold'>
                                 {cityName}
                             </h1>
                             <p className='text-xs font-light'>
@@ -41,10 +50,23 @@ export const CityCard:React.FC<CityCardProps> = ({
                             {temperatureValue} &#8451;
                         </p>
                     </div>
-                    <div className='card__arrow'>
-                        <IconContext.Provider value={{ color: "#fde68a", size: "54px" }}>
-                            <MdDoubleArrow/>
-                        </IconContext.Provider>
+                    <div className='flex flex-col-reverse items-end'>
+                        <div className='card__arrow'>
+                            <IconContext.Provider value={{ color: "#fde68a", size: "54px" }}>
+                                <MdDoubleArrow/>
+                            </IconContext.Provider>
+                        </div>
+                        <div 
+                            className="card__unsave flex items-center gap-1 cursor-pointer active:text-amber-400"
+                            onClick={onUnsaveCity}
+                        >
+                            <IconContext.Provider value={{ color: "#fde68a", size: "18px"}} >
+                                <FaStar/>
+                            </IconContext.Provider>
+                            <p className="uppercase text-sm md:text-md font-extrabold text-amber-200 active:text-amber-400 hover:text-amber-300 ">
+                                unsave
+                            </p>
+                        </div>
                     </div>
                 </div>
                 <div className="card__details-wrapper flex flex-col items-center gap-5 w-full">
