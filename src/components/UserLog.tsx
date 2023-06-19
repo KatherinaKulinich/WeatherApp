@@ -48,8 +48,6 @@ export const UserLog:React.FC = () => {
                             src={avatar} 
                             alt="userAvatar" 
                             className="rounded-full w-6 h-6 lg:w-7 lg:h-7"
-                            // width={28}
-                            // height={28}
                         />
                     ) : (
                         <IconContext.Provider value={{ color: "white", size: "28px"}}>

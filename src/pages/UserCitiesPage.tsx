@@ -40,7 +40,6 @@ export const UserCitiesPage:React.FC = () => {
 
     useEffect( () => {
         getForecastForSavedCities()
-        // getCityBgImage()
     }, [])
 
 
