@@ -62,7 +62,7 @@ export const DailyWeatherInfo:React.FC<DailyWeatherInfoProps> = (
                 />
             </div>
             {children}
-            <div>
+            <div  className="flex flex-wrap ">
                 <WidgetsGroup 
                     windValue={Math.round(windSpeed)} 
                     humidityValue={humidity} 

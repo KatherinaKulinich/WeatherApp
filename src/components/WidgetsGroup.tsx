@@ -31,7 +31,7 @@ export const WidgetsGroup:React.FC<WidgetsGroupProps> = (
     {windValue, humidityValue, pressureValue, tempMin, tempMax, cloudsValue, rainValue, uvValue, sunriseValue, sunsetValue}) => {
 
     return (
-        <div className="flex flex-wrap items-stretch justify-center gap-5 md:gap-16 w-full ">
+        <div className="flex flex-wrap items-stretch justify-center gap-6 md:gap-20 w-full ">
             <div className="w-full max-w-[320px] sm:w-1/3 md:1/4">
                 <ItemWidget 
                     itemIcon={windIcon} 
