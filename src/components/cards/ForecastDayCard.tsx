@@ -1,10 +1,10 @@
 import { Tooltip, Zoom } from "@mui/material";
 import { IconContext } from "react-icons";
 import { MdDoubleArrow } from 'react-icons/Md';
-import { useDate } from "../hooks/useDate";
-import { useAppSelector } from "../hooks/hooks";
+import { useDate } from "../../hooks/useDate";
+import { useAppSelector } from "../../hooks/hooks";
 import { Link } from "react-router-dom";
-import { getWeatherBackground } from "../utils/getWeatherBackground";
+import { getWeatherBackground } from "../../utils/getWeatherBackground";
 
 
 

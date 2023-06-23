@@ -1,7 +1,7 @@
-import logoMain from '../assets/images/logoPlanet.svg';
-import logoSun from '../assets/images/logoSun.svg';
-import logoClouds from '../assets/images/logoClouds2.svg';
-import logoLabel from '../assets/images/logoLabel.svg';
+import logoMain from '../../assets/images/logoPlanet.svg';
+import logoSun from '../../assets/images/logoSun.svg';
+import logoClouds from '../../assets/images/logoClouds2.svg';
+import logoLabel from '../../assets/images/logoLabel.svg';
 
 
 

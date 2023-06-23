@@ -1,6 +1,6 @@
 import { Logo } from "./Logo"
-import { Navigation } from "./Navigation"
-import { UserLog } from "./UserLog"
+import { Navigation } from "../Navigation"
+import { UserLog } from "../userLogin/UserLog"
 
 
 export const Header:React.FC = () => {

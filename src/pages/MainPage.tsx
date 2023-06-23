@@ -1,89 +1,97 @@
 import { useCallback, useEffect, useState } from "react"
 import { SearchField } from "../components/SearchField"
-import { WeatherDisplay } from "../components/WeatherDisplay"
+import { WeatherDisplay } from "../components/dataDisplay/WeatherDisplay"
 import { useAppDispatch, useAppSelector } from "../hooks/hooks";
-import { fetchLocationData } from "../rdx/slices/locationSlice";
+import { fetchLocationData, getImageUrl } from "../rdx/slices/locationSlice";
 import { clearForecastData, fetchForecast, getLoading, getWeatherForecast } from "../rdx/slices/forecastSlice";
 import { Loader } from "../components/Loader";
-import { ErrorMessage } from "../components/ErrorMessage";
-import { FaRegStar, FaStar } from 'react-icons/Fa'
-import { IconContext } from "react-icons";
+import { ErrorMessage } from "../components/errorsMessages/ErrorMessage";
 import { useSaveCity } from "../hooks/useSaveCity";
-import { Alert, AlertTitle } from "@mui/material";
-import { useCityImage } from "../hooks/useCityImage";
 import { useCheckCity } from "../hooks/useCheckCity";
 import { fetchSavedCitiesData } from "../rdx/slices/savedSlice";
 import { useAuth } from "../hooks/useUserAuthData";
+import usePlacesService from "react-google-autocomplete/lib/usePlacesAutocompleteService";
+import { ErrorAlert } from "../components/errorsMessages/ErrorAlert";
+import { SaveCityButton } from "../components/buttons/SaveCityButton";
+
 
 
 
 
 
 export const MainPage:React.FC = () => {
+ 
     const dispatch = useAppDispatch();
-    const { id : userId } = useAuth();
     const latitude = useAppSelector(state => state.locationData.coords.latitude)
     const longitude = useAppSelector(state => state.locationData.coords.longitude)
     const forecastData = useAppSelector(state => state.forecast.weatherForecast)
+
+    const { id : userId } = useAuth();
     const { loading } = useAppSelector(state => state.forecast)
     const { errorMessage } = useAppSelector(state => state.forecast)
     const { errorMessage: errorLocation } = useAppSelector(state => state.locationData)
-    const { cityName, regionName, countryCode } = useAppSelector(state => state.locationData)
+    const { cityName, regionName, countryCode, imgUrl } = useAppSelector(state => state.locationData)
     const { timezone } = useAppSelector(state => state.forecast.weatherForecast)
     const { onSaveCityData } = useSaveCity()
     const { checkCity, onCheckSaving, setCheckCity } = useCheckCity()
-    const { getCityBgImage } = useCityImage()
+
+
     const [textValue, setTextValue] = useState('')
+    const [lat, setLat] = useState<number | null>(null)
+    const [lon, setLon] = useState<number | null>(null)
+    const [googleError, setGoogleError] = useState(null)
+    const [isOpenAutoCompleteList, setIsOpenAutoCompleteList] = useState(false)
     
+    const API_KEY = import.meta.env.VITE_PLACES_API_KEY;
+    const { placesService, placePredictions, getPlacePredictions, isPlacePredictionsLoading} = usePlacesService({
+        apiKey: API_KEY,
+    });
 
-
-
-    const onChangeInputValue = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {      
-        setTextValue(e.target.value)
+  
+    
+    const onChangeInputValue = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {   
+        setIsOpenAutoCompleteList(true)   
+        const val = event.target.value;
+        setTextValue(val)
+        getPlacePredictions({ input: val });
+        console.warn(placePredictions);
     },[])
 
 
-
     const fetchData = useCallback(async() => {
-        if (textValue.trim() !== '') {
-            const validValue = textValue.replaceAll(/[^a-zа-яіё ]/gi, '');
-            await dispatch(clearForecastData())
-            await dispatch(getLoading())
-            await dispatch(fetchLocationData(`direct?q=${validValue}`)) 
+        await dispatch(clearForecastData())
+        await dispatch(getLoading())
+
+        if (lat !== null && lon !== null) {
+            await dispatch(fetchLocationData(`reverse?lat=${lat}&lon=${lon}`)) 
+            return
         }
 
-    },[textValue])
+        if (googleError !== '' ) {
+            await dispatch(fetchLocationData(`direct?q=${textValue}`)) 
+        }
 
+    },[textValue, lat, lon])
+
+    const onChooseCity = useCallback(async(city:string) => {
+        await setTextValue(city)
+    },[textValue])
 
 
     const onGetForecast = useCallback((event:  React.FormEvent<HTMLFormElement>) => {
         event.preventDefault()
+        setIsOpenAutoCompleteList(false)
         fetchData()
         dispatch(getWeatherForecast({} as GeneralForecast))
         setTextValue('')
-
-    },[textValue])
-
-
-    useEffect(() => {
-        if (latitude !== null && longitude !== null) {
-
-            (async () => {
-                await dispatch(fetchForecast(latitude, longitude))
-                await onCheckSaving()
-            })();
-        }  
-    }, [latitude, longitude, userId])
-
+    },[textValue, lat, lon])
 
 
     const onSave = useCallback(
-        async (cityName:string, regionName:string, countryName:string, latitude:number | null, longitude:number | null, timeZone:string) => {
+        async (cityName:string, regionName:string, countryName:string, latitude:number | null, longitude:number | null, timeZone:string, imgUrl:string) => {
             
         if (checkCity) return;
-       
-        await onSaveCityData(cityName, regionName, countryName, latitude, longitude, timeZone)
-        await getCityBgImage()
+        await onSaveCityData(cityName, regionName, countryName, latitude, longitude, timeZone, imgUrl)
         await setCheckCity(true)
         
         if (userId) {
@@ -92,60 +100,90 @@ export const MainPage:React.FC = () => {
     },[])
 
 
+    useEffect(() => {
+        try {
+            if (placePredictions.length > 0) {        
+                placePredictions.map((city) => {
+                    if (city.description === textValue) {
+                        return placesService?.getDetails(
+                            {
+                                placeId: city.place_id,
+                            },
+                            (placeDetails) => {
+
+                                if (placeDetails !== null  && placeDetails?.photos !== undefined) {
+                                    if (placeDetails?.photos[0]?.getUrl() !== '') {
+                                        dispatch(getImageUrl(placeDetails?.photos[0]?.getUrl()))   
+                                    } else {
+                                        dispatch(getImageUrl('')) 
+                                    }
+                                }
+
+                                if (placeDetails?.geometry?.location !== undefined) {
+                                    setLat(placeDetails?.geometry?.location?.lat())
+                                    setLon(placeDetails?.geometry?.location?.lng())
+                                }   
+                            }
+                        )
+                    }
+                })
+                return
+            }
+            if (placePredictions.length === 0) {
+                throw new Error('Something went wrong')
+            }       
+        }
+        catch(error:any) {
+            setGoogleError(error.message)
+        }
+
+    }, [placePredictions, textValue, lat, lon]);
+
+
+    useEffect(() => {
+        if (latitude !== null && longitude !== null) {
+            (async () => {
+                await dispatch(fetchForecast(latitude, longitude))
+                await onCheckSaving()
+            })();
+        }  
+    }, [latitude, longitude, userId])
+        
+ 
+
 
 
 
     return (
-        <div className="flex flex-col items-center gap-20 py-16 w-full">
-            <SearchField
-                onChangeInput={onChangeInputValue}
-                inputValue={textValue}
-                onSubmitData={onGetForecast}
+        <div className={`flex flex-col items-center py-16 w-full gap-20`}>
+            <SearchField 
+                onChangeInputValue={onChangeInputValue} 
+                inputValue={textValue} 
+                onSubmitData={onGetForecast} 
+                onChooseCityAutocomplete={onChooseCity} 
+                listIsOpen={isOpenAutoCompleteList}
+                isPlacePredictionsLoading={isPlacePredictionsLoading}
+                placePredictions={placePredictions}
             />
-    
-            {loading && (
+            {loading &&  (
                 <Loader/>
             )}
-
             {errorLocation !== '' && (
-                <Alert 
-                    severity="error" 
-                    sx={{ width: '100%', maxWidth: '300px' }} 
-                    variant="outlined" 
-                    className="flex justify-center  items-center gap-4 uppercase"
-                >
-                    <AlertTitle className="text-red-600">
-                        Error
-                    </AlertTitle>
-                    {errorLocation}
-                </Alert>
+                <ErrorAlert errorText={errorLocation}/>
             )}
-
             {Object.keys(forecastData).length !== 0  && errorLocation === '' && (
-                <div  
-                    className="flex items-center gap-4 cursor-pointer active:text-amber-400"
-                    onClick={() => onSave(cityName, regionName, countryCode, latitude, longitude, timezone) }
-                >
-                    {checkCity ? (
-                        <IconContext.Provider value={{ color: "#fde68a", size: "22px"}} >
-                            <FaStar/>
-                        </IconContext.Provider>
-                    ) : (
-                        <IconContext.Provider value={{ color: "#fde68a", size: "22px"}} >
-                            <FaRegStar/>
-                        </IconContext.Provider>
-                    )}
-                    <p className="uppercase text-lg md:text-2xl font-extrabold text-amber-200 active:text-amber-400">
-                        {checkCity ? 'Saved!' : 'Save this city' } 
-                    </p>
-                </div>
+                <SaveCityButton 
+                    onSave={() => onSave(cityName, regionName, countryCode, latitude, longitude, timezone,imgUrl)} 
+                    check={checkCity}
+                />
             )}
             {Object.keys(forecastData).length !== 0 && errorLocation === '' && (
                 <WeatherDisplay />
             )}
-            {errorMessage && (
+            {errorMessage && !loading && (
                 <ErrorMessage/>
             )}
         </div>
     )
 }
+

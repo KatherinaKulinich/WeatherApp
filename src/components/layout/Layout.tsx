@@ -28,7 +28,7 @@ export const Layout: React.FC = () => {
                     <Header/>
                 </div>
             </header>
-            <main className="container xl:container mx-auto px-4">
+            <main className="container xl:container mx-auto px-4  ">
                 <Outlet/>
             </main>
             <footer className="bg-slate-50/30">

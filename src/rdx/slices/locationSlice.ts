@@ -17,6 +17,7 @@ interface LocationState {
     cityName: string,
     regionName: string,
     countryCode: string,
+    imgUrl: string,
     errorMessage: string
 }
 
@@ -31,11 +32,11 @@ const initialState: LocationState = {
         longitude: null
     },
     cityName: '',
+    regionName: '',
     countryCode: '',
+    imgUrl:'',
     errorMessage: '',
-    regionName: ''
 }
-
 
 
 
@@ -58,11 +59,14 @@ const locationSlice = createSlice({
         getCountryCode(state, action: PayloadAction<string>) {
             state.countryCode = action.payload
         },
+        getImageUrl(state, action: PayloadAction<string>) {
+            state.imgUrl = action.payload
+        },
         getError(state, action: PayloadAction<string>) {
             state.errorMessage = action.payload
         },
         onClearCoords(state) {
-            state.coords = {} as Coords
+            state.coords = {} as Coords 
         }
     }
 })
@@ -101,5 +105,15 @@ export const fetchLocationData = (reguest: string) => {
 
 
 
-export const { getCountryCode, getCityName, getLatitudeCoords, getLongitudeCoords, getError, getRegionName, onClearCoords } = locationSlice.actions;
+export const { 
+    getCountryCode, 
+    getCityName, 
+    getLatitudeCoords, 
+    getLongitudeCoords, 
+    getError, 
+    getRegionName, 
+    onClearCoords, 
+    getImageUrl 
+} = locationSlice.actions;
+
 export default locationSlice.reducer;

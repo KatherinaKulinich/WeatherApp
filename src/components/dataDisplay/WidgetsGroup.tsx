@@ -1,13 +1,13 @@
-import { ItemWidget } from "./ItemWidget"
-import temperatureIcon from '../assets/images/temperature.svg';
-import windIcon from '../assets/images/wind.svg';
-import humidityIcon from '../assets/images/humidity.svg';
-import pressureIcon from '../assets/images/pressure.svg';
-import cloudsIcon from '../assets/images/clouds.svg';
-import rainIcon from '../assets/images/rains.svg';
-import uvIcon from '../assets/images/sunUV.svg';
-import sunriseIcon from '../assets/images/sunrise.svg';
-import sunsetIcon from '../assets/images/sunset.svg';
+import { ItemWidget } from "../cards/WeatherParameterCard"
+import temperatureIcon from '../../assets/images/temperature.svg';
+import windIcon from '../../assets/images/wind.svg';
+import humidityIcon from '../../assets/images/humidity.svg';
+import pressureIcon from '../../assets/images/pressure.svg';
+import cloudsIcon from '../../assets/images/clouds.svg';
+import rainIcon from '../../assets/images/rains.svg';
+import uvIcon from '../../assets/images/sunUV.svg';
+import sunriseIcon from '../../assets/images/sunrise.svg';
+import sunsetIcon from '../../assets/images/sunset.svg';
 
 
 

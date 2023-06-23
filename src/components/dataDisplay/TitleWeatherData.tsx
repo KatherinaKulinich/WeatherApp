@@ -1,6 +1,6 @@
-import calendarIcon from '../assets/images/date.svg';
-import { useAppSelector } from '../hooks/hooks';
-import { useDate } from '../hooks/useDate';
+import calendarIcon from '../../assets/images/date.svg';
+import { useAppSelector } from '../../hooks/hooks';
+import { useDate } from '../../hooks/useDate';
 
 interface TitleWeatherDataProps {
     date: number;
@@ -14,8 +14,8 @@ interface TitleWeatherDataProps {
 export const TitleWeatherData:React.FC<TitleWeatherDataProps> = ({ date, temperatureValue, weatherDescription, tempFeelValue}) => {
 
     
-    const {timezone: cityTimeZone } = useAppSelector(state => state.forecast.weatherForecast)
-    const {weekday, formatDate} = useDate(date*1000, cityTimeZone)
+    const { timezone: cityTimeZone } = useAppSelector(state => state.forecast.weatherForecast)
+    const { weekday, formatDate } = useDate(date*1000, cityTimeZone)
 
     return (
         <div className="flex flex-col gap-7 justify-center text-center md:text-left uppercase">

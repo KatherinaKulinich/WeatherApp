@@ -1,5 +1,5 @@
-import { BackButton } from "../components/BackButton"
-import { WeatherDisplay } from "../components/WeatherDisplay"
+import { BackButton } from "../components/buttons/BackButton"
+import { WeatherDisplay } from "../components/dataDisplay/WeatherDisplay"
 
 export const CityWeatherPage: React.FC = () => {
     return (

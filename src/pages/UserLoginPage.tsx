@@ -1,10 +1,11 @@
-import { Box, Tabs, Tab, ThemeProvider, createTheme, AlertTitle, Collapse } from "@mui/material";
-import {  useCallback, useEffect, useState } from "react";
-import { TabPanel } from "../components/TabPanel";
-import { LogInContainer } from "../components/LogInContainer";
-import { SignUpContainer } from "../components/SignUpContainer";
+import { ThemeProvider, createTheme,  Collapse } from "@mui/material";
+import { useCallback, useEffect, useState } from "react";
+import { TabPanel } from "../components/tab/TabPanel";
+import { LogInContainer } from "../components/userLogin/LogInContainer";
+import { SignUpContainer } from "../components/userLogin/SignUpContainer";
 import { useFirebaseAuth } from "../hooks/useFirebaseAuth";
-import Alert from '@mui/material/Alert';
+import { ErrorAlert } from "../components/errorsMessages/ErrorAlert";
+import { TabsBox } from "../components/tab/TabsBox";
 
 const theme = createTheme({
     palette: {
@@ -22,11 +23,10 @@ const theme = createTheme({
 
 export const UserLogin: React.FC = () => {
 
- 
     const [value, setValue] = useState(0);
     const {onLoginHandler, onLoginByGoogle, onRegisterHandler, error, openAlert, setOpenAlert} = useFirebaseAuth()
 
-    const handleChange = useCallback((event: React.SyntheticEvent, newValue: number) => {
+    const handleChangeTab = useCallback((event: React.SyntheticEvent, newValue: number) => {
         setValue(newValue);
     },[])
 
@@ -46,12 +46,7 @@ export const UserLogin: React.FC = () => {
         <div className="py-16 flex flex-col items-center gap-9">
             {error && (
                 <Collapse in={openAlert}>
-                    <Alert severity="error">
-                        <AlertTitle>
-                            Error
-                        </AlertTitle>
-                        {error.message}
-                    </Alert>
+                    <ErrorAlert errorText={error.message}/>
                 </Collapse>
             )}
             <h1 className="uppercase text-xl sm:text-2xl font-extralight text-sky-200">
@@ -59,39 +54,26 @@ export const UserLogin: React.FC = () => {
             </h1>
             <div className="w-full">
                 <ThemeProvider theme={theme}>
-                    <Box sx={{ borderBottom: 1, borderColor: '#e3f2fd', width: '100%' }}>
-                        <Tabs 
-                            value={value} 
-                            onChange={handleChange} 
-                            centered 
-                            textColor="secondary"
-                            indicatorColor="secondary"
-                            variant="fullWidth" 
-                        >
-                            <Tab  
-                                label={
-                                    <span style={{ color: '#bae6fd' }}>
-                                        Log in
-                                    </span>
-                                }
-                            />
-                            <Tab  
-                                label={
-                                    <span style={{ color: '#bae6fd' }}>
-                                        Sign up
-                                    </span>
-                                }
-                            />
-                        </Tabs>
-                    </Box>
-                    <TabPanel value={value} index={0}>
+                    <TabsBox 
+                        firstTabName="Log in"
+                        secondTabName="Sign up"
+                        onChange={handleChangeTab}
+                        tabsValue={value}
+                    />
+                    <TabPanel 
+                        value={value} 
+                        index={0}
+                    >
                        <LogInContainer
                             onSendData={onLoginHandler} 
                             onHandleClickGoogle={onLoginByGoogle}
                             error={error}
                         />
                     </TabPanel>
-                    <TabPanel value={value} index={1}>
+                    <TabPanel 
+                        value={value} 
+                        index={1}
+                    >
                         <SignUpContainer 
                             onSendData={onRegisterHandler}
                             error={error}

@@ -5,6 +5,9 @@ import { db } from "../firebase";
 import { useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "./hooks";
 import { fetchSavedCitiesData} from "../rdx/slices/savedSlice";
+import { onClearCoords } from "../rdx/slices/locationSlice";
+import { clearForecastData } from "../rdx/slices/forecastSlice";
+
 
 
 export const useSaveCity = () => {
@@ -31,7 +34,7 @@ export const useSaveCity = () => {
 
 
     const onSaveCityData = useCallback( 
-        async (cityName:string, regionName:string, countryName:string, latitude:number | null, longitude:number | null, timeZone:string) => {
+        async (cityName:string, regionName:string, countryName:string, latitude:number | null, longitude:number | null, timeZone:string, img:string) => {
 
         if (isAuth) {
             if (userId !== null) {
@@ -44,12 +47,15 @@ export const useSaveCity = () => {
                     latitude,
                     longitude,
                     timeZone,
-                    image: '',
+                    image: img,
                 })
                 .then((doc) => docId = doc.id)
             }
             return
         }
+
+        dispatch(clearForecastData())
+        dispatch(onClearCoords())
         navigate('/login')
 
     }, [userId])
@@ -58,7 +64,7 @@ export const useSaveCity = () => {
 
     
     const onToggleCity = useCallback(
-        (cityName:string, regionName:string, countryName:string, latitude:number | null, longitude:number | null, timeZone:string) => {
+        (cityName:string, regionName:string, countryName:string, latitude:number | null, longitude:number | null, timeZone:string, img:string) => {
 
         if (isAuth) {
             setCheckCity(false)
@@ -68,7 +74,7 @@ export const useSaveCity = () => {
                 return
             }
             setCheckCity(false)
-            onSaveCityData(cityName, regionName, countryName, latitude, longitude, timeZone)
+            onSaveCityData(cityName, regionName, countryName, latitude, longitude, timeZone, img)
             return
         }
         navigate('/login')

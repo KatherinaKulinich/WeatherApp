@@ -1,17 +1,15 @@
 import { useNavigate } from "react-router-dom";
-import { CityCard } from "../components/CityCard/CityCard"
+import { CityCard } from "../components/cards/CityCard/CityCard"
 import { useSaveCity } from "../hooks/useSaveCity";
 import { useCallback, useEffect } from "react";
-import { ErrorMessage } from "../components/ErrorMessage";
+import { ErrorMessage } from "../components/errorsMessages/ErrorMessage";
 import { useAppDispatch, useAppSelector } from "../hooks/hooks";
 import { getWeatherForecast } from "../rdx/slices/forecastSlice";
 import { getCityName, getRegionName, getCountryCode, getLatitudeCoords, getLongitudeCoords } from "../rdx/slices/locationSlice";
-import defaultImg from '../assets/images/backgrounds/defaultCity1.jpg'
-import { GiModernCity } from 'react-icons/Gi'
-import { IconContext } from "react-icons";
 import { Loader } from "../components/Loader";
-import { useCityImage } from "../hooks/useCityImage";
 import { UseCityForecasts } from "../hooks/useCitiesForecasts";
+import defaultImg from '../assets/images/backgrounds/defaultCity1.jpg'
+import { MessageNoSaved } from "../components/errorsMessages/messageNoSaved";
 
 
 
@@ -21,7 +19,6 @@ export const UserCitiesPage:React.FC = () => {
     const dispatch = useAppDispatch();
     const { saved, onUnsaveCity } = useSaveCity()
     const { loading } = useAppSelector(state => state.saved)
-    const { imgErr, getCityBgImage } = useCityImage()
     const { forecasts, errorForecast, getForecastForSavedCities } = UseCityForecasts()
 
 
@@ -68,21 +65,14 @@ export const UserCitiesPage:React.FC = () => {
                                             humidityValue={Math.round(forecast.current.humidity)} 
                                             onOpenCity={() => onOpenCityForecast(city, forecast)}
                                             onUnsaveCity={() => onUnsaveCity(city)}
-                                            cityImgSrc={imgErr === '' ? city.image !== '' ? city.image : defaultImg : defaultImg }
+                                            cityImgSrc={city.image !== '' ? city.image : defaultImg }
                                         />
                                     </div>      
                     })
                 ))
             )}
             {saved?.length === 0 && !loading && (
-                <div className="flex flex-col gap-5 items-center">
-                    <IconContext.Provider value={{ color: "#bae6fd", size: "130px"}} >
-                        <GiModernCity/>
-                    </IconContext.Provider>
-                    <p className="uppercase text-2xl text-sky-100 font-extralight"> 
-                        You don't have any saved cities yet
-                    </p>
-                </div>
+                <MessageNoSaved/>
             )}
             {saved?.length > 0 && errorForecast !=='' && (
                 <ErrorMessage/>

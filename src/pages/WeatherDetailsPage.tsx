@@ -1,10 +1,10 @@
-
-import { DailyWeatherInfo } from "../components/DailyWeatherInfo"
-import { BackButton } from "../components/BackButton";
+import { DailyWeatherInfo } from "../components/dataDisplay/DailyWeatherInfo"
+import { BackButton } from "../components/buttons/BackButton";
 import { useDate } from "../hooks/useDate";
 import { useAppSelector } from "../hooks/hooks";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
+import { CityMainInfo } from "../components/dataDisplay/CityMainInfo";
 
 
 
@@ -12,11 +12,11 @@ import { useEffect } from "react";
 export const WeatherDetailsPage: React.FC = () => {
 
     const navigate = useNavigate();
-
     const forecast = useAppSelector(state => state.forecast.weatherForecast)
+
     const { cityName, regionName, countryCode } = useAppSelector(state => state.locationData)
     const { timezone: cityTimeZone } = useAppSelector(state => state.forecast.weatherForecast)
-    const {uvi, sunrise, sunset, temp, feels_like, pressure, humidity, wind_speed, weather, clouds, pop, dt} = useAppSelector(state => state.forecast.dailyForecast)
+    const { uvi, sunrise, sunset, temp, feels_like, pressure, humidity, wind_speed, weather, clouds, pop, dt } = useAppSelector(state => state.forecast.dailyForecast)
 
 
     useEffect(() => {
@@ -33,8 +33,6 @@ export const WeatherDetailsPage: React.FC = () => {
     const description = weather ? weather[0]?.description : ''
     const icon = weather ? weather[0]?.icon : ''
 
-    const regularTextStyles = 'text-sky-200 font-extralight tracking-widest'
-   
 
 
 
@@ -44,20 +42,13 @@ export const WeatherDetailsPage: React.FC = () => {
             { Object.keys(forecast).length !== 0 ? (
                 <div className="py-16 flex flex-col gap-12">
                     <BackButton buttonText={"Back to daily forecast"}/>
-                    <div className="text-center uppercase">
-                        <h1 className="text-2xl md:text-5xl text-white font-extrabold">
-                            {`${cityName}`}
-                        </h1>
-                        <p className="text-lg md:text-2xl text-white font-extrabold"> 
-                            {`${regionName}, ${countryCode}`}
-                        </p>
-                        <p className={`text-lg md:text-2xl ${regularTextStyles}`}>
-                            {time}
-                        </p>
-                        <p className={`text-xs md:text-lg ${regularTextStyles}`}>
-                            {cityTimeZone}
-                        </p>
-                    </div>
+                    <CityMainInfo 
+                        cityName={cityName} 
+                        regionName={regionName} 
+                        countryCode={countryCode} 
+                        cityTimeZone={cityTimeZone} 
+                        currentTime={time}
+                    />
                     <DailyWeatherInfo 
                         weatherIcon={icon}
                         temperatureValue={temp?.day} 
@@ -79,7 +70,7 @@ export const WeatherDetailsPage: React.FC = () => {
                 </div>
             ) : (
                 <div className="py-16 flex flex-col gap-12">
-                    <p className={`text-lg md:text-2xl ${regularTextStyles}`}>
+                    <p className={`text-lg md:text-2xl text-sky-200 font-extralight tracking-widest`}>
                         City hadn't been selected
                     </p>
                 </div>

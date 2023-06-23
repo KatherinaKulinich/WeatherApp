@@ -1,6 +1,6 @@
-import { ForecastDayCard } from "./ForecastDayCard"
-import { useAppDispatch, useAppSelector } from "../hooks/hooks";
-import { getDayForecast } from "../rdx/slices/forecastSlice";
+import { ForecastDayCard } from "../cards/ForecastDayCard"
+import { useAppDispatch, useAppSelector } from "../../hooks/hooks";
+import { getDayForecast } from "../../rdx/slices/forecastSlice";
 import { useCallback } from "react";
 
 

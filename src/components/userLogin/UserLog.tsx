@@ -1,10 +1,10 @@
-import { ButtonLog } from "./ButtonLog";
+import { ButtonLog } from "../buttons/ButtonLog";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "../hooks/useUserAuthData";
+import { useAuth } from "../../hooks/useUserAuthData";
 import { getAuth, signOut } from "firebase/auth";
 import { useCallback } from "react";
-import { removeUser } from "../rdx/slices/userDataSlice";
-import { useAppDispatch } from "../hooks/hooks";
+import { removeUser } from "../../rdx/slices/userDataSlice";
+import { useAppDispatch } from "../../hooks/hooks";
 import { FaUserCircle } from 'react-icons/Fa'
 import { IconContext } from "react-icons";
 

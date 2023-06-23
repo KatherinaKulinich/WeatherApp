@@ -15,8 +15,6 @@ interface ForecastState {
 
 
 
-
-
 const initialState: ForecastState = {
     weatherForecast: {} as GeneralForecast,
     userSavedForecasts: [],
@@ -43,6 +41,7 @@ const forecastSlice = createSlice({
         },
         clearForecastData(state) {
             state.weatherForecast = {} as GeneralForecast
+            console.warn(state.weatherForecast);
         },
         getLoading(state) {
             state.loading = true;

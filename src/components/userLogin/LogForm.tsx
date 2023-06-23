@@ -2,7 +2,7 @@ import { AccountCircle } from '@mui/icons-material';
 import { Box, TextField } from '@mui/material';
 import { IconContext } from 'react-icons';
 import { MdSend} from 'react-icons/Md';
-import { useFirebaseAuth } from '../hooks/useFirebaseAuth';
+import { useFirebaseAuth } from '../../hooks/useFirebaseAuth';
 import LockIcon from '@mui/icons-material/Lock';
 import { useCallback, useEffect, useState } from 'react';
 
@@ -21,7 +21,6 @@ interface LogFormProps {
 export const LogForm: React.FC<LogFormProps> = ({ formTitle, onSendData, error}) => {
 
     const { email, password, onSaveEmail, onSavePassword, setError} = useFirebaseAuth()
-
     const [isEmailError, setIsEmailError] = useState(false)
     const [isPasswordError, setIsPasswordError] = useState(false)
 
@@ -50,8 +49,6 @@ export const LogForm: React.FC<LogFormProps> = ({ formTitle, onSendData, error})
             }
         }
     }, [isEmailError, isPasswordError])
-
-
     
     
     const onSendUserData = useCallback((event:any, email:string, password:string) => {
@@ -64,6 +61,8 @@ export const LogForm: React.FC<LogFormProps> = ({ formTitle, onSendData, error})
     useEffect(() => {
         onFilterError(error)
     }, [error])
+
+
 
 
     return (

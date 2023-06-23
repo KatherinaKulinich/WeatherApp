@@ -1,5 +1,5 @@
-import { HourlyData } from "./HourlyData"
-import { useAppSelector } from "../hooks/hooks";
+import { HourlyData } from "../cards/HourlyDataCard"
+import { useAppSelector } from "../../hooks/hooks";
 import { useCallback } from "react";
 
 

@@ -3,10 +3,12 @@ import { Box, Tabs, Tab, ThemeProvider, createTheme } from "@mui/material";
 import { useState } from "react";
 import { DailyWeatherInfo} from './DailyWeatherInfo';
 import { FutureForecast} from './FutureForecast';
-import { TabPanel } from "./TabPanel";
-import { useAppSelector } from "../hooks/hooks";
-import { useDate } from "../hooks/useDate";
+import { TabPanel } from "../tab/TabPanel";
+import { useAppSelector } from "../../hooks/hooks";
+import { useDate } from "../../hooks/useDate";
 import { HourlyWidget } from "./HourlyWidget";
+import { TabsBox } from "../tab/TabsBox";
+import { CityMainInfo } from "./CityMainInfo";
 
 
 
@@ -28,15 +30,15 @@ const theme = createTheme({
 export const WeatherDisplay: React.FC = () => {
 
     const currentTime = new Date().getTime()
-    const [value, setValue] = useState(0);
     const { cityName, regionName, countryCode } = useAppSelector(state => state.locationData)
     const { timezone: cityTimeZone, current } = useAppSelector(state => state.forecast.weatherForecast)
     const { hourly } = useAppSelector(state => state.forecast.weatherForecast)
     const { dt, clouds, feels_like, humidity, pressure, sunrise, sunset, temp, uvi, wind_speed } = useAppSelector(state => state.forecast.weatherForecast.current)
     
     const { time } = useDate(currentTime, cityTimeZone)
-
-    const handleChange = (event: React.SyntheticEvent, newValue: number) => {
+    
+    const [value, setValue] = useState(0);
+    const handleChangeTab = (event: React.SyntheticEvent, newValue: number) => {
         setValue(newValue);
     };
 
@@ -60,47 +62,24 @@ export const WeatherDisplay: React.FC = () => {
 
     return (
         <div className="w-full flex flex-col items-stretch gap-6">
-            <div className="text-center uppercase">
-                <h1 className="text-2xl md:text-5xl text-white font-extrabold">
-                    {`${cityName}`}
-                </h1>
-                <p className="text-lg md:text-2xl text-white font-extrabold"> 
-                    {`${regionName !== '' ? regionName : cityName}, ${countryCode}`}
-                </p>
-                <p className="text-lg md:text-2xl text-sky-200 font-extralight tracking-widest">
-                    {time}
-                </p>
-                <p className="text-xs md:text-lg text-sky-200 font-extralight tracking-widest">
-                    {cityTimeZone}
-                </p>
-            </div>
+            <CityMainInfo 
+                cityName={cityName} 
+                regionName={regionName} 
+                countryCode={countryCode} 
+                cityTimeZone={cityTimeZone} 
+                currentTime={time}
+            />
             <ThemeProvider theme={theme}>
-                <Box sx={{ borderBottom: 1, borderColor: '#e3f2fd', width: '100%' }}>
-                    <Tabs 
-                        value={value} 
-                        onChange={handleChange} 
-                        centered 
-                        textColor="secondary"
-                        indicatorColor="secondary"
-                        variant="fullWidth"  
-                    >
-                        <Tab  
-                            label={
-                                <span style={{ color: '#bae6fd' }}>
-                                    Today
-                                </span>
-                            }
-                        />
-                        <Tab  
-                            label={
-                                <span style={{ color: '#bae6fd' }}>
-                                    Next days
-                                </span>
-                            }
-                        />
-                    </Tabs>
-                </Box>
-                <TabPanel value={value} index={0}>
+                <TabsBox 
+                    firstTabName="Today"
+                    secondTabName="Next days"
+                    onChange={handleChangeTab}
+                    tabsValue={value}
+                />
+                <TabPanel 
+                    value={value} 
+                    index={0}
+                >
                     <DailyWeatherInfo 
                         weatherIcon={icon}
                         temperatureValue={temp} 
@@ -122,7 +101,10 @@ export const WeatherDisplay: React.FC = () => {
                         <HourlyWidget/>
                     </DailyWeatherInfo>
                 </TabPanel>
-                <TabPanel value={value} index={1}>
+                <TabPanel 
+                    value={value} 
+                    index={1}
+                >
                     <FutureForecast />
                 </TabPanel>
             </ThemeProvider>   

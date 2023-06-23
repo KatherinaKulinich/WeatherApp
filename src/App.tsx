@@ -1,6 +1,6 @@
-import { Route, Routes } from "react-router-dom";
-import { Layout } from "./components/Layout";
 import './index.css'
+import { Route, Routes } from "react-router-dom";
+import { Layout } from "./components/layout/Layout";
 import { MainPage } from "./pages/MainPage";
 import { UserLocationPage } from "./pages/UserLocationPage";
 import { UserCitiesPage } from "./pages/UserCitiesPage";
@@ -9,6 +9,8 @@ import { CityWeatherPage } from "./pages/CityWeatherPage";
 import { WeatherDetailsPage } from "./pages/WeatherDetailsPage";
 import { Page404 } from "./pages/404Page";
 import { RequireAuth } from './hoc/RequireAuth'
+
+
 
 export const App = () => {
     return (  
