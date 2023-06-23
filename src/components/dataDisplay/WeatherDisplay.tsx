@@ -1,5 +1,5 @@
 
-import { Box, Tabs, Tab, ThemeProvider, createTheme } from "@mui/material";
+import { ThemeProvider, createTheme } from "@mui/material";
 import { useState } from "react";
 import { DailyWeatherInfo} from './DailyWeatherInfo';
 import { FutureForecast} from './FutureForecast';
@@ -39,6 +39,7 @@ export const WeatherDisplay: React.FC = () => {
     
     const [value, setValue] = useState(0);
     const handleChangeTab = (event: React.SyntheticEvent, newValue: number) => {
+        event.preventDefault()
         setValue(newValue);
     };
 

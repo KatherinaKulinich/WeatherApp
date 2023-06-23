@@ -27,6 +27,7 @@ export const UserLogin: React.FC = () => {
     const {onLoginHandler, onLoginByGoogle, onRegisterHandler, error, openAlert, setOpenAlert} = useFirebaseAuth()
 
     const handleChangeTab = useCallback((event: React.SyntheticEvent, newValue: number) => {
+        event.preventDefault()
         setValue(newValue);
     },[])
 
