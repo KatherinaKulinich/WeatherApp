@@ -77,7 +77,7 @@ export const UserLocationPage: React.FC = () => {
             {Object.keys(forecast).length === 0 && !loading && error === '' && (
                 <ErrorGeolocation/>
             )}
-            {error !== '' && (
+            {error !== '' && !loading && (
                 <ErrorMessage/>
             )}
         </div>
