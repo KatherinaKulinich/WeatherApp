@@ -31,6 +31,8 @@ interface DailyWeatherInfoProps {
 
 export const DailyWeatherInfo:React.FC<DailyWeatherInfoProps> = (
     { weatherIcon, children, temperatureValue, description, feelslike, windSpeed, humidity, pressure,maxTemp, minTemp, clouds, averagePop, uvi, sunrise, sunset, dt, currentTimeZone }) => {
+    
+    const IMG_URL = import.meta.env.VITE_WEATHER_ICON_URL
 
 
 
@@ -48,7 +50,7 @@ export const DailyWeatherInfo:React.FC<DailyWeatherInfoProps> = (
             <div className="flex flex-col sm:flex-row gap-14 items-center justify-center md:gap-30 w-full">
                 <div className="p-3 rounded-full bg-sky-100/25 w-40 h-40 md:w-56 md:h-56 flex items-center justify-center">
                     <img 
-                        src={`http://openweathermap.org/img/wn/${weatherIcon}@2x.png`} 
+                        src={`${IMG_URL}${weatherIcon}@2x.png`} 
                         alt="weatherIcon" 
                         width={140}
                         height={140}
