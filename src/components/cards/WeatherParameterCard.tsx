@@ -9,7 +9,7 @@ interface ItemWidgetProps {
 export const ItemWidget:React.FC<ItemWidgetProps> = ({itemIcon, itemName, itemValue, itemUnits}) => {
 
     return (
-        <div className="bg-cyan-50/10 border border-slate-50 p-8 rounded-lg flex flex-col gap-5 h-full">
+        <div className="bg-cyan-50/10 border border-slate-50 p-5 md:p-8 rounded-lg flex flex-col gap-5 h-full">
             <div className="flex flex-col justify-center gap-2 items-center">
                 <img 
                     src={itemIcon} 

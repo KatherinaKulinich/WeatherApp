@@ -155,7 +155,7 @@ export const MainPage:React.FC = () => {
 
 
     return (
-        <div className={`flex flex-col items-center py-16 w-full gap-20`}>
+        <div className={`flex flex-col items-center py-10 md:py-16 w-full gap-10 md:gap-20`}>
             <SearchField 
                 onChangeInputValue={onChangeInputValue} 
                 inputValue={textValue} 

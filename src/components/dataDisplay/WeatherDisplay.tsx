@@ -62,7 +62,7 @@ export const WeatherDisplay: React.FC = () => {
 
 
     return (
-        <div className="w-full flex flex-col items-stretch gap-6">
+        <div className="w-full flex flex-col items-stretch gap-3 md:gap-6">
             <CityMainInfo 
                 cityName={cityName} 
                 regionName={regionName} 

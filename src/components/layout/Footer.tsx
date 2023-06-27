@@ -12,7 +12,7 @@ export const Footer: React.FC = () => {
     const date = new Date().getFullYear()
 
     return (
-        <div className="py-6 flex flex-col-reverse md:flex-row gap-6 md:gap-0 items-center justify-between">
+        <div className="py-4 md:py-6 flex flex-col-reverse md:flex-row gap-4 md:gap-0 items-center justify-between">
             <div className="flex flex-col  items-center md:items-start gap-2">
                 <p className="pb-2 border-b border-b-sky-200 text-sky-200 flex gap-2 uppercase text-xs sm:text-sm">
                     Created by 

@@ -18,7 +18,7 @@ export const TitleWeatherData:React.FC<TitleWeatherDataProps> = ({ date, tempera
     const { weekday, formatDate } = useDate(date*1000, cityTimeZone)
 
     return (
-        <div className="flex flex-col gap-7 justify-center text-center md:text-left uppercase">
+        <div className="flex flex-col gap-4 md:gap-7 justify-center text-center md:text-left uppercase">
             <div className='flex items-center gap-4 justify-center sm:justify-start'>
                 <img 
                     src={calendarIcon} 
@@ -26,7 +26,7 @@ export const TitleWeatherData:React.FC<TitleWeatherDataProps> = ({ date, tempera
                     width={40}
                     height={40}
                 />
-               <div>
+               <div className='flex flex-col items-start'>
                     <p className='text-sm font-light text-sky-200'>
                         {weekday}
                     </p>

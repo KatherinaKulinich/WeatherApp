@@ -46,7 +46,7 @@ export const DailyWeatherInfo:React.FC<DailyWeatherInfoProps> = (
 
 
     return (
-        <div className="flex flex-col gap-32 w-full ml-auto mr-auto">
+        <div className="flex flex-col gap-20 md:gap-32 w-full ml-auto mr-auto">
             <div className="flex flex-col sm:flex-row gap-14 items-center justify-center md:gap-30 w-full">
                 <div className="p-3 rounded-full bg-sky-100/25 w-40 h-40 md:w-56 md:h-56 flex items-center justify-center">
                     <img 

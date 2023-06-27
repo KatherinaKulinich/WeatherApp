@@ -37,21 +37,21 @@ export const SearchField: React.FC<SearchFieldProps> = (
          <div className="w-full max-w-[600px] flex flex-col items-center gap-7 relative">
             
             <form 
-                action="" 
-                className=" bg-slate-100/25 flex items-stretch justify-center px-6 py-2 rounded-full w-full max-w-[600px] gap-3 border "
+                className=" bg-slate-100/25 flex items-end  px-4 py-2 md:px-6  rounded-full w-[90%] max-w-[600px] gap-1 md:gap-3 border "
                 onSubmit={onSubmitData}
             >
                 <Input
                     placeholder="Search..."
                     ref={ref}
-                    className="w-full caret-slate-50 text-slate-50"
+                    className="w-full h-10 caret-slate-50 text-slate-50"
                     value={inputValue}
                     onChange={onChangeInputValue}
                 />
                 <IconButton 
                     aria-label="search" 
-                    size="large"
+                    // size="large"
                     type="submit"
+                    className='w-10 h-10 md:w-12 md:h-12'
                 >
                     <SearchIcon fontSize="inherit" />
                 </IconButton>

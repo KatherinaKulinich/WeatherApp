@@ -40,21 +40,21 @@ export const UserLog:React.FC = () => {
     }
 
     return (
-        <div className="flex flex-col-reverse md:flex-row gap-y-4 md:gap-x-6 items-center">
+        <div className="flex gap-x-3 md:gap-x-5 items-center justify-center">
             {isAuth && (
                 <div className="flex flex-row gap-3 items-center border rounded-full px-2 py-1 lg:px-4 lg:py-2">
                     {avatar ? (
                         <img 
                             src={avatar} 
                             alt="userAvatar" 
-                            className="rounded-full w-6 h-6 lg:w-7 lg:h-7"
+                            className="rounded-full w-6 h-6 "
                         />
                     ) : (
                         <IconContext.Provider value={{ color: "white", size: "28px"}}>
                             <FaUserCircle/>
                         </IconContext.Provider>
                     )}
-                    <p className="text-white text-[9px] lg:text-sm uppercase">
+                    <p className="text-white text-[9px] lg:text-xs uppercase">
                         {email}
                     </p>
                 </div>

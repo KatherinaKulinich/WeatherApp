@@ -11,7 +11,7 @@ export const HourlyData: React.FC<HourlyDataProps> = ({time, icon, temperature})
     const IMG_URL = import.meta.env.VITE_WEATHER_ICON_URL
     
     return (
-        <div className="flex flex-col items-center gap-3 p-3 sm:p-5">
+        <div className="flex flex-col items-center gap-1 sm:gap-3 p-2 sm:p-5">
             <p className="text-sky-100 text-sm font-light">
                 {time}
             </p>
