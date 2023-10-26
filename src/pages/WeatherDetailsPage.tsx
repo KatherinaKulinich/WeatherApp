@@ -10,7 +10,6 @@ import { CityMainInfo } from "../components/dataDisplay/CityMainInfo";
 
 
 export const WeatherDetailsPage: React.FC = () => {
-
     const navigate = useNavigate();
     const forecast = useAppSelector(state => state.forecast.weatherForecast)
 
@@ -25,8 +24,6 @@ export const WeatherDetailsPage: React.FC = () => {
         }
     }, [])
 
-
-    
     const currentTime = new Date().getTime()
     const { time } = useDate(currentTime, cityTimeZone)
 

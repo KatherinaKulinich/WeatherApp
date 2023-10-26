@@ -29,17 +29,12 @@ export const useSaveCity = () => {
 
 
 
-
-
-
-
     const onSaveCityData = useCallback( 
         async (cityName:string, regionName:string, countryName:string, latitude:number | null, longitude:number | null, timeZone:string, img:string) => {
 
         if (isAuth) {
             if (userId !== null) {
                 if (latitude === coords.latitude && longitude === coords.longitude) return
-
                 await addDoc(collection(db, 'users', userId, 'saved'), {
                     cityName,
                     regionName, 
@@ -53,11 +48,9 @@ export const useSaveCity = () => {
             }
             return
         }
-
         dispatch(clearForecastData())
         dispatch(onClearCoords())
         navigate('/login')
-
     }, [userId])
 
 
@@ -81,21 +74,12 @@ export const useSaveCity = () => {
     },[])
 
 
-
-
     const onUnsaveCity= useCallback(async(city: any) => {
-
         if (userId !== null) {
             await deleteDoc(doc(db, 'users', userId, 'saved', city.id));
             dispatch(fetchSavedCitiesData (userId))
         }
-
     }, [userId])
-
-
-
-
-
 
     
     return {

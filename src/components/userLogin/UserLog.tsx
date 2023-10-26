@@ -26,7 +26,6 @@ export const UserLog:React.FC = () => {
             .catch((error) => {
                 console.log(error);
             });
-
     }, [dispatch])
 
 

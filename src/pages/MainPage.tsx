@@ -20,7 +20,6 @@ import { SaveCityButton } from "../components/buttons/SaveCityButton";
 
 
 export const MainPage:React.FC = () => {
- 
     const dispatch = useAppDispatch();
     const latitude = useAppSelector(state => state.locationData.coords.latitude)
     const longitude = useAppSelector(state => state.locationData.coords.longitude)
@@ -50,31 +49,28 @@ export const MainPage:React.FC = () => {
   
     
     const onChangeInputValue = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {   
-        setIsOpenAutoCompleteList(true)   
         const val = event.target.value;
+        setIsOpenAutoCompleteList(true)   
         setTextValue(val)
         getPlacePredictions({ input: val });
-        console.warn(placePredictions);
     },[])
 
 
-    const fetchData = useCallback(async() => {
-        await dispatch(clearForecastData())
-        await dispatch(getLoading())
+    const fetchData = useCallback(() => {
+        dispatch(clearForecastData())
+        dispatch(getLoading())
 
         if (lat !== null && lon !== null) {
-            await dispatch(fetchLocationData(`reverse?lat=${lat}&lon=${lon}`)) 
+            dispatch(fetchLocationData(`reverse?lat=${lat}&lon=${lon}`)) 
             return
         }
-
         if (googleError !== '' ) {
-            await dispatch(fetchLocationData(`direct?q=${textValue}`)) 
+            dispatch(fetchLocationData(`direct?q=${textValue}`)) 
         }
-
     },[textValue, lat, lon])
 
-    const onChooseCity = useCallback(async(city:string) => {
-        await setTextValue(city)
+    const onChooseCity = useCallback((city:string) => {
+        setTextValue(city)
     },[textValue])
 
 
@@ -92,7 +88,7 @@ export const MainPage:React.FC = () => {
             
         if (checkCity) return;
         await onSaveCityData(cityName, regionName, countryName, latitude, longitude, timeZone, imgUrl)
-        await setCheckCity(true)
+        setCheckCity(true)
         
         if (userId) {
             await dispatch(fetchSavedCitiesData(userId))
@@ -110,7 +106,6 @@ export const MainPage:React.FC = () => {
                                 placeId: city.place_id,
                             },
                             (placeDetails) => {
-
                                 if (placeDetails !== null  && placeDetails?.photos !== undefined) {
                                     if (placeDetails?.photos[0]?.getUrl() !== '') {
                                         dispatch(getImageUrl(placeDetails?.photos[0]?.getUrl()))   
@@ -118,7 +113,6 @@ export const MainPage:React.FC = () => {
                                         dispatch(getImageUrl('')) 
                                     }
                                 }
-
                                 if (placeDetails?.geometry?.location !== undefined) {
                                     setLat(placeDetails?.geometry?.location?.lat())
                                     setLon(placeDetails?.geometry?.location?.lng())
@@ -136,22 +130,19 @@ export const MainPage:React.FC = () => {
         catch(error:any) {
             setGoogleError(error.message)
         }
-
     }, [placePredictions, textValue, lat, lon]);
 
 
     useEffect(() => {
-        if (latitude !== null && longitude !== null) {
+        if (latitude && longitude) {
             (async () => {
                 await dispatch(fetchForecast(latitude, longitude))
-                await onCheckSaving()
+                onCheckSaving()
             })();
         }  
     }, [latitude, longitude, userId])
         
  
-
-
 
 
     return (
@@ -173,14 +164,14 @@ export const MainPage:React.FC = () => {
             )}
             {Object.keys(forecastData).length !== 0  && errorLocation === '' && (
                 <SaveCityButton 
-                    onSave={() => onSave(cityName, regionName, countryCode, latitude, longitude, timezone,imgUrl)} 
+                    onSave={() => onSave(cityName, regionName, countryCode, latitude, longitude, timezone, imgUrl)} 
                     check={checkCity}
                 />
             )}
             {Object.keys(forecastData).length !== 0 && errorLocation === '' && (
                 <WeatherDisplay />
             )}
-            {errorMessage && !loading && (
+            {errorMessage && !loading && Object.keys(forecastData).length === 0 && (
                 <ErrorMessage/>
             )}
         </div>

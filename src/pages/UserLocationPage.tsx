@@ -12,7 +12,6 @@ import { ErrorGeolocation } from "../components/errorsMessages/ErrorGeolocation"
 
 
 export const UserLocationPage: React.FC = () => {
-    
     const dispatch = useAppDispatch();
     const forecast = useAppSelector(state => state.forecast.weatherForecast)
     const error = useAppSelector(state => state.forecast.errorMessage)
@@ -40,14 +39,14 @@ export const UserLocationPage: React.FC = () => {
     },[])
 
 
-    const fetchData = useCallback(async () => { 
+    const fetchData = useCallback(() => { 
         dispatch(getWeatherForecast({} as GeneralForecast))
-        await window.addEventListener('load', getLocationData)
+        window.addEventListener('load', getLocationData)
         
-        if (latitude !== null && longitude !== null) {
-            await dispatch(fetchLocationData(`reverse?lat=${latitude}&lon=${longitude}`))  
-            await dispatch(fetchForecast(latitude, longitude))
-            await setLoading(false)
+        if (latitude && longitude) {
+            dispatch(fetchLocationData(`reverse?lat=${latitude}&lon=${longitude}`))  
+            dispatch(fetchForecast(latitude, longitude))
+            setLoading(false)
         }
     },[latitude, longitude])
     
@@ -59,9 +58,7 @@ export const UserLocationPage: React.FC = () => {
     },[latitude, longitude])
 
 
-    
-  
-    
+
 
 
     return (

@@ -28,6 +28,9 @@ export const SearchField: React.FC<SearchFieldProps> = (
         //     types: ["(regions)"],
         // },
         language: 'en',
+        onPlaceSelected: (place) => {
+            console.log(place);
+        },
     })
 
    

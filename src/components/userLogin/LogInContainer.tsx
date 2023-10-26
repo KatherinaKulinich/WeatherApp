@@ -1,9 +1,6 @@
-
 import { LogForm } from "./LogForm"
 import { IconContext } from "react-icons";
 import { GrGoogle } from 'react-icons/Gr';
-
-
 
 
 interface LogInContainerProps {
@@ -13,8 +10,9 @@ interface LogInContainerProps {
 }
 
 
-export const LogInContainer:React.FC<LogInContainerProps> = ({onSendData, onHandleClickGoogle,  error}) => {
 
+
+export const LogInContainer:React.FC<LogInContainerProps> = ({onSendData, onHandleClickGoogle,  error}) => {
 
     return (
         <div className="border rounded-md p-8 md:p-16 w-full max-w-[600px] mr-auto ml-auto bg-sky-200/10 flex flex-col items-center gap-6">

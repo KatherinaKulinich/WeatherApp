@@ -22,7 +22,6 @@ const theme = createTheme({
 
 
 export const UserLogin: React.FC = () => {
-
     const [value, setValue] = useState(0);
     const {onLoginHandler, onLoginByGoogle, onRegisterHandler, error, openAlert, setOpenAlert} = useFirebaseAuth()
 
@@ -32,16 +31,12 @@ export const UserLogin: React.FC = () => {
     },[])
 
 
-
     useEffect(() => {
         setTimeout(() => {
             setOpenAlert(false);
         }, 6000);
     }, [openAlert])
     
-
-
-
 
     return (
         <div className="py-16 flex flex-col items-center gap-9">

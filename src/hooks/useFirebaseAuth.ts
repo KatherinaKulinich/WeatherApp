@@ -20,13 +20,8 @@ export const useFirebaseAuth = () => {
     const [openAlert, setOpenAlert] = useState<boolean>(true);
     const [error, setError] = useState<ErrorType>(null)
 
-    
     const provider = new GoogleAuthProvider();
     const auth = getAuth();
-    
-  
-
-
 
     const onSaveEmail = useCallback((event:React.ChangeEvent<HTMLInputElement>) => {
         setEmail(event.target.value)
@@ -37,27 +32,23 @@ export const useFirebaseAuth = () => {
     }, [])
 
 
-
-
-
-
     const onRegisterHandler = (event:React.MouseEvent<HTMLButtonElement>, email:string, password:string) => {
         event.preventDefault();
 
         const auth = getAuth();
         createUserWithEmailAndPassword(auth, email, password)
-            .then(({user}) => {
-                dispatch(setUser({
-                    email: user.email,
-                    id: user.uid,
-                    password: user.refreshToken,
-                }));
-                navigate('/')
-            })
-            .catch((error:Error) => {
-                setError(error)
-                setOpenAlert(true)
-            })
+        .then(({user}) => {
+            dispatch(setUser({
+                email: user.email,
+                id: user.uid,
+                password: user.refreshToken,
+            }));
+            navigate('/')
+        })
+        .catch((error:Error) => {
+            setError(error)
+            setOpenAlert(true)
+        })
     }
 
 
@@ -65,7 +56,7 @@ export const useFirebaseAuth = () => {
 
     const onLoginHandler = useCallback((event:React.MouseEvent<HTMLButtonElement>, email:string, password:string) => {
         event.preventDefault();
-        
+    
         signInWithEmailAndPassword(auth, email, password)
         .then(({user}) => {
             dispatch(setUser({
@@ -79,7 +70,6 @@ export const useFirebaseAuth = () => {
             setError(error)
             setOpenAlert(true)
         });
-
     }, [])
 
 
@@ -88,7 +78,6 @@ export const useFirebaseAuth = () => {
     
 
     const onLoginByGoogle = useCallback(() => {
-
         signInWithPopup(auth, provider)
         .then((result) => {
             const credential = GoogleAuthProvider.credentialFromResult(result);

@@ -3,7 +3,6 @@ import { useEffect, useState } from "react"
 
 
 export const useDate = (timeValue: number, timeZone: string) => {
-
     const [time, setTime] = useState(new Date().toLocaleTimeString("en-GB", {timeZone: timeZone}))
     const date = new Date(timeValue)
 
