@@ -90,7 +90,7 @@
 <p>🔸 When you <b>hover</b> over a city card you can quickly "unsave" a city, making it easy to manage your list of saved locations.
 You can also see key weather indicators, including humidity, atmospheric pressure, wind speed, and the chance of rain.</p>
 
-<p>🔸<b>By clicking on the 'MORE INFO'</b> on a city card, you'll be seamlessly taken to the full city forecast. This detailed forecast encompasses various aspects, such as the current weather conditions, today's forecast, an hourly forecast, and a weekly outlook.</p>
+<p>🔸 <b>By clicking on the 'MORE INFO'</b> on a city card, you'll be taken to the full city forecast. This detailed forecast encompasses various aspects, such as the current weather conditions, today's forecast, an hourly forecast, and a weekly outlook.</p>
 
 <div align='center'>
   <img  width='300'  src='https://github.com/KatherinaKulinich/WeatherApp/assets/109860560/78279061-d5cb-404a-bce3-4d13099552a2'/>
