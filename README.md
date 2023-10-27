@@ -52,7 +52,7 @@
   <img width='600' src='https://github.com/KatherinaKulinich/WeatherApp/assets/109860560/d5d6caf3-b19d-4dc0-9741-650d927a8c95'/>
 </div>
 
-<h4> 🌎 Mylocation </h4>
+<h4> 🌎 My location </h4>
 <p>When you select "My Location" and your device's geolocation is enabled, the app instantly provides you with the current weather forecast for your precise location. It's as simple as that – no need to manually enter your location</p>
 
 <h4> 🌎 Search </h4>
@@ -65,15 +65,15 @@
 <h4> 🌎 Authentication </h4>
 <p>You can log in to the app using your Google account or through a standard registration process. After your initial registration, you can simply log in to the app. The button that provides access to both the login and registration pages can be found at the app's header.</p>
 <div align='center'>
-  <img width='450' src='https://github.com/KatherinaKulinich/WeatherApp/assets/109860560/cff22aef-aef1-429f-89e8-0cc086956a1c'/>
+  <img width='600' src='https://github.com/KatherinaKulinich/WeatherApp/assets/109860560/cff22aef-aef1-429f-89e8-0cc086956a1c'/>
 </div>
 <br/>
 <div align='center'>
-  <img width='450'  src='https://github.com/KatherinaKulinich/WeatherApp/assets/109860560/43f07755-e167-42ba-9f18-9072075aea41'/>
+  <img width='600'  src='https://github.com/KatherinaKulinich/WeatherApp/assets/109860560/43f07755-e167-42ba-9f18-9072075aea41'/>
 </div>
 
 <h4> 🌎 Saved locations </h4>
-<p>📍 When you navigate to the "Saved" section, you'll be directed to the login page. Once you've successfully authenticated or logged in, you gain the privilege to save your preferred cities. This feature allows you to store and access the weather forecasts for your favorite locations with ease.</p>
+<p>📍 When you navigate to the "Saved" section first time, you'll be directed to the login page. Once you've successfully authenticated or logged in, you gain the privilege to save your preferred cities. This feature allows you to store and access the weather forecasts for your favorite locations with ease.</p>
 <div align='center'>
   <img height='50' src='https://github.com/KatherinaKulinich/WeatherApp/assets/109860560/8299ddac-f13f-4c56-9504-a58cbeadfc13'/>
   <img height='50' src='https://github.com/KatherinaKulinich/WeatherApp/assets/109860560/8363faed-c0c6-4ace-bba1-19b90e52e437'/>
@@ -90,7 +90,14 @@
 <p>🔸 When you <b>hover</b> over a city card you can quickly "unsave" a city, making it easy to manage your list of saved locations.
 You can also see key weather indicators, including humidity, atmospheric pressure, wind speed, and the chance of rain.</p>
 
-<p>🔸 <b>By clicking on the 'MORE INFO'</b> on a city card, you'll be taken to the full city forecast. This detailed forecast encompasses various aspects, such as the current weather conditions, today's forecast, an hourly forecast, and a weekly outlook.</p>
+<p>🔸 <b>By clicking on the 'MORE INFO'</b> on a city card, you'll be taken to the full city forecast.</p>
+<p>This detailed forecast encompasses various aspects, such as:</p>
+<ul>
+  <li>the current weather conditions</li>
+  <li>today's forecast</li>
+  <li>an hourly forecast</li>
+  <li>a weekly outlook</li>
+</ul>
 
 <div align='center'>
   <img  width='300'  src='https://github.com/KatherinaKulinich/WeatherApp/assets/109860560/78279061-d5cb-404a-bce3-4d13099552a2'/>
@@ -108,7 +115,7 @@ You can also see key weather indicators, including humidity, atmospheric pressur
 
 
 <h6> 🌝 Current Weather </h6>
-<p>When you open the app, you'll see the current weather conditions for your selected location, including the temperature, weather description (e.g., sunny, rainy), weather icon and how the temperature feels.</p>
+<p>When you open the app, you'll see the current weather conditions for your selected location, including the temperature, weather description, weather icon and how the temperature feels.</p>
 <div align='center'>
   <img width='300'  src='https://github.com/KatherinaKulinich/WeatherApp/assets/109860560/6a1f0a05-92b5-4541-b0e3-b1d6f6308d62'/>
 </div>
